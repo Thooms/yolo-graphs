@@ -10,9 +10,9 @@ private:
   /* COUNTER is the latest available edge id, it is safe to use as
    * this, but do not forget to increment it afterwards. 
    */
-  static int COUNTER;
+  static unsigned int COUNTER;
 
-  int id_;
+  unsigned int id_;
 
   EdgeType type_;
   
@@ -24,18 +24,26 @@ public:
   /* COUNTER behavior */
   static void counterIncr(void);
   static void counterDecr(void);
-  static int getCounter(void);
+  static unsigned int getCounter(void);
 
   /* Constructors */
 
-  Edge();
+  explicit Edge();
 
   /* {Get,Set}ters */
+
+  unsigned int id(void);
+
+  EdgeType type(void);
   
   V distance(void);
   void setDistance(V);
 
   V speed(void);
+
+  /* Destructor */
+
+  ~Edge() {}
 
 };
 

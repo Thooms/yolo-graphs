@@ -2,30 +2,36 @@
 #ifndef GRAPH_HH
 #define GRAPH_HH
 
-#import "Edge.hh"
-#import "Vertex.hh"
+#include "Edge.hh"
+#include "Vertex.hh"
+#include "Nameable.hh"
+
+#include <vector>
+
+using namespace std;
 
 template <typename V>
-class Graph {
+class Graph : public Nameable {
 private:
-  int vertices_nb_;
-  int edges_nb_;
+  unsigned int vertices_nb_;
+  unsigned int edges_nb_;
   
 
 public:
-  Graph();
+  explicit Graph();
+  explicit Graph(string name);
 
   // NOTE: No setter, the only way to modify it is to add a vertex
-  int verticesNb(void);
+  unsigned int verticesNb(void);
   
   // NOTE: No setter as well
-  int edgesNb(void);
+  unsigned int edgesNb(void);
   
   /* Adds an edge and returns its id */
   virtual int addEdge(Edge<V>&) = 0;
   
   /* Removes an edge from the graph */
-  virtual void removeEdge(int) = 0;
+  virtual void removeEdge(Edge<V>&) = 0;
 
   /* Adds a vertex and returns its id */
   virtual int addVertex(Vertex&) = 0;
@@ -35,7 +41,11 @@ public:
    * NOTE: depending on the underlying representation, a node removal
    * can also remove some of the edges coming from/to this node.
    */
-  virtual void removeVertex(int) = 0;
+  virtual void removeVertex(Vertex&) = 0;
+
+  virtual vector<const Edge<V>&> outgoingEdges(Vertex&);
+
+  virtual vector<const Vertex&> adjacentVertices(Vertex&);
 
 };
 

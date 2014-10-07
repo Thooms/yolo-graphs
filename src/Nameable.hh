@@ -5,13 +5,13 @@
 #include <string>
 
 class Nameable {
-  
-  explicit Nameable() {};
-
 private:
   std::string name_;
 
 public:
+
+  explicit Nameable() {};
+
   std::string name(void);
   void setName(std::string&);
 
