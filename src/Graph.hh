@@ -8,18 +8,18 @@
 template <typename V>
 class Graph {
 private:
-  int vertices_nb;
-  int edges_nb;
+  int vertices_nb_;
+  int edges_nb_;
   
 
 public:
   Graph();
 
   // NOTE: No setter, the only way to modify it is to add a vertex
-  int getVerticesNb(void);
+  int verticesNb(void);
   
   // NOTE: No setter as well
-  int getEdgesNb(void);
+  int edgesNb(void);
   
   /* Adds an edge and returns its id */
   virtual int addEdge(Edge<V>&) = 0;

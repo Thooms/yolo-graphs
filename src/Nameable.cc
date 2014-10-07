@@ -5,10 +5,10 @@
 
 using namespace std;
 
-Nameable::getName(void) {
-  return name;
+string Nameable::name(void) {
+  return name_;
 }
 
-Nameable::setName(string& s) {
-  name = s;
+void Nameable::setName(string& s) {
+  name_ = s;
 }

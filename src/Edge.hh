@@ -12,11 +12,11 @@ private:
    */
   static int COUNTER;
 
-  int id;
+  int id_;
 
-  EdgeType type;
+  EdgeType type_;
   
-  V distance;
+  V distance_;
 
 
 public:
@@ -32,10 +32,10 @@ public:
 
   /* {Get,Set}ters */
   
-  V getDistance(void);
+  V distance(void);
   void setDistance(V);
 
-  V getSpeed(void);
+  V speed(void);
 
 };
 

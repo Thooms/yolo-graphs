@@ -9,10 +9,10 @@ class Nameable {
   explicit Nameable() {};
 
 private:
-  std::string name;
+  std::string name_;
 
 public:
-  std::string getName(void);
+  std::string name(void);
   void setName(std::string&);
 
 };
