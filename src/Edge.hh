@@ -2,7 +2,12 @@
 #ifndef EDGE_HH
 #define EDGE_HH
 
+#include <utility>
+
 #include "EdgeType.hh"
+#include "Vertex.hh"
+
+using namespace std;
 
 template <typename V>
 class Edge {
@@ -18,6 +23,7 @@ private:
   
   V distance_;
 
+  pair<Vertex&, Vertex&> vertices_;
 
 public:
   
@@ -29,6 +35,7 @@ public:
   /* Constructors */
 
   explicit Edge();
+  explicit Edge(Vertex&, Vertex&, EdgeType, V);
 
   /* {Get,Set}ters */
 
