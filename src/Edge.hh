@@ -48,6 +48,8 @@ public:
 
   V speed(void);
 
+  pair<Vertex&, Vertex&> vertices(void);
+
   /* Destructor */
 
   ~Edge() {}

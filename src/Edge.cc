@@ -58,3 +58,8 @@ template <typename V>
 V Edge<V>::speed(void) {
   return (V)type_;
 }
+
+template <typename V>
+pair<Vertex&, Vertex&> Edge<V>::vertices(void) {
+  return vertices_;
+}
