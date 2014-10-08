@@ -43,12 +43,12 @@ public:
 
   EdgeType type(void);
   
-  V distance(void);
+  V& distance(void);
   void setDistance(V);
 
   V speed(void);
 
-  pair<Vertex&, Vertex&> vertices(void);
+  pair<Vertex&, Vertex&>& vertices(void);
 
   /* Destructor */
 

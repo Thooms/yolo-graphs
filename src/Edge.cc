@@ -45,7 +45,7 @@ EdgeType Edge<V>::type(void) {
 }
 
 template <typename V>
-V Edge<V>::distance(void) {
+V& Edge<V>::distance(void) {
   return distance_;
 }
 
@@ -60,6 +60,6 @@ V Edge<V>::speed(void) {
 }
 
 template <typename V>
-pair<Vertex&, Vertex&> Edge<V>::vertices(void) {
+pair<Vertex&, Vertex&>& Edge<V>::vertices(void) {
   return vertices_;
 }
