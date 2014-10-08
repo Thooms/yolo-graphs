@@ -12,7 +12,7 @@ using namespace std;
 
 template <typename V>
 class Graph : public Nameable {
-private:
+protected:
   unsigned int vertices_nb_;
   unsigned int edges_nb_;
   
