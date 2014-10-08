@@ -6,7 +6,7 @@
 
 template <typename T, typename V>
 class GraphInput {
-private:
+protected:
   Graph<V>& graph_;
 public:
   GraphInput(Graph<V>& g);
