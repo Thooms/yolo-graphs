@@ -37,7 +37,9 @@ public:
 
   V speed(void);
 
-  pair<Vertex&, Vertex&>& vertices(void);
+  pair<unsigned int, unsigned int>& vertices(void);
+
+  unsigned int getOtherEnd(unsigned int);
 
   /* Destructor */
 

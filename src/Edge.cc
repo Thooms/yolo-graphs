@@ -37,6 +37,20 @@ V Edge<V>::speed(void) {
 }
 
 template <typename V>
-pair<Vertex&, Vertex&>& Edge<V>::vertices(void) {
+pair<unsigned int, unsigned int>& Edge<V>::vertices(void) {
   return vertices_;
+}
+
+template <typename V>
+unsigned int Edge<V>::getOtherEnd(unsigned int id) {
+  switch (id) {
+  case vertices_.first:
+    return vertices_.second;
+
+  case vertices_.second:
+    return vertices_.first;
+
+  default: // Bad id is given
+    return -1;
+  }
 }
