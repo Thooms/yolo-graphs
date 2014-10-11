@@ -43,7 +43,51 @@ Edge<V> DirectedGraph<V>::getEdge(unsigned int id) {
   return edges_[id];
 }
 
+template <typename V>
+Vertex DirectedGraph<V>::getVertex(unsigned int id) {
+  // if (id >= adjacency_.size())
+  //  return;
+  
+  return adjacency_[id].first;
+}
 
+template <typename V>
+vector<Edge<V>*> DirectedGraph<V>::outgoingEdges(unsigned int id) {
+  // if (id >= adjacency_.size())
+  //  return;
 
+  vector<Edge<V>*> edges(adjacency_[id].second.size());
+  int j(0);
 
+  for (auto i : adjacency_[id].second)
+    edges[j++] = &edges_[i];
+
+  return edges; 
+}
+
+template <typename V>
+vector<Vertex*> DirectedGraph<V>::adjacentVertices(unsigned int id) {
+  // if (id >= adjacency_.size())
+  //  return;
+
+  vector<Vertex*> vertices(adjacency_[id].second.size());
+  int j(0);
+
+  for (auto i : adjacency_[id].second) {
+    Edge<V> edge = edges_[i];
+
+    vertices[j++] = &adjacency_[edge.getOtherEnd(id)].first;
+  }
+
+  return vertices;
+}
+
+template <typename V>
+DirectedGraph<V>::~DirectedGraph() {
+  for (auto v : adjacency_)
+    v.second.clear();
+
+  adjacency_.clear();
+  edges_.clear();
+}
 
