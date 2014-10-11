@@ -1,37 +1,14 @@
 #include "Edge.hh"
 
 template <typename V>
-unsigned int Edge<V>::COUNTER = 0;
+Edge<V>::Edge() {}
 
 template <typename V>
-void Edge<V>::counterIncr(void) {
-  ++COUNTER;
-}
-
-template <typename V>
-void Edge<V>::counterDecr(void) {
-  --COUNTER;
-}
-
-template <typename V>
-unsigned int Edge<V>::getCounter(void) {
-  return COUNTER;
-}
-
-template <typename V>
-Edge<V>::Edge() {
-
-}
-
-template <typename V>
-Edge<V>::Edge(Vertex& a, Vertex& b, EdgeType type, V distance) {
-  vertices_.first = a;
-  vertices_.second = b;
+Edge<V>::Edge(unsigned int id, unsigned int start, unsigned int end, EdgeType type, V dist) {
+  id_ = id;
+  vertices_ = make_pair(start, end);
   type_ = type;
-  distance_ = distance;
-
-  id_ = getCounter();
-  counterIncr();
+  distance_ = dist;
 }
 
 template <typename V>
