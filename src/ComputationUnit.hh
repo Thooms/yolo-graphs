@@ -9,35 +9,28 @@
 #include "Vertex.hh"
 #include "Edge.hh"
 
+
+template <typename V>
 class ComputationUnit {
 private:
   // TODO: make the graph ref const, and adapt the code thereof
-  Graph& graph_;
-
-  /* General-purpose search, to be parametrized with a queue or a
-   * stack, and an edge filter */
-  std::vector<Vertex*> search(Vertex& start, std::function<Edge& (bool)> filter);
+  Graph<V>& graph_;
 
 public:
   
   /* Constructors */
   
-  explicit ComputationUnit() {};
-  explicit ComputationUnit(Graph& g) {};
+  explicit ComputationUnit();
+  explicit ComputationUnit(Graph<V>& g);
 
   /* {Get,Set}ters */
 
-  Graph& graph(void);
-  void setGraph(Graph& g);
-
-  /* HERE BEGINZ THE LULZ */
+  Graph<V>& graph(void);
+  void setGraph(Graph<V>& g);
   
-  std::vector<Vertex*> bfs(Vertex& start, std::function<Edge& (bool)> filter);
-  std::vector<Vertex*> dfs(Vertex& start, std::function<Edge& (bool)> filter);
-  std::vector<Vertex*> shortestPath(Vertex& start, Vertex& end
-				    , std::function<Edge& (bool)> filter);
+  std::vector<Vertex*> bfs(Vertex& start, unsigned int depth, std::function<Edge<V>& (bool)> filter);
+  std::vector<Vertex*> dfs(Vertex& start, unsigned int depth, std::function<Edge<V>& (bool)> filter);
+  std::vector<Vertex*> shortestPath(Vertex& start, Vertex& end, std::function<Edge<V>& (bool)> filter);
 };
 
 #endif
-
-
