@@ -19,7 +19,7 @@ public:
 
     ifstream ifs(path, ifstream::in);
 
-    int v, e;
+    int v;
     string tmp;
 
     /* We parse a vertex number, and a list of vertices names */
@@ -28,7 +28,7 @@ public:
 
     for (int i = 0; i < v; i++) {
       ifs >> tmp;
-      graph_.addVertex(Vertex(tmp));
+      this->graph_.addVertex(Vertex(tmp));
     }
     
   }
