@@ -3,60 +3,47 @@
 #include <utility>
 #include <vector>
 
+#include "Edge.hh"
+#include "EdgeType.hh"
 #include "Vertex.hh"
+
 
 using namespace std;
 
+
 template <typename V>
-int DirectedGraph<V>::addEdge(Edge<V>& e) {
-  pair<Vertex&, Vertex&>& vertices = e.vertices();
+unsigned int DirectedGraph<V>::addEdge(EdgeType type, V distance, unsigned int start, unsigned int end) {
 
-  int source = vertices.first.id();
+  Edge<V> e = Edge<V>(this->edges_nb, start, end, type, distance);
+  this->edges_nb++;
 
-  auto obj = adjacency_.find(source);
-
-  if (obj == adjacency_.end()) {
-    adjacency_[source] = vector<Edge<V>&>();
-    obj.second = adjacency_[source];
-  }
-
-  obj.second.push_back(e);
-
-  this->edges_nb_++;
+  if (start >= this->vertices_nb_ || end >= this->vertices_nb_)
+    return -1;
+  
+  adjacency_[start].second.push_back(e.id());
+  edges_.push_back(e);
 
   return e.id();
 }
 
 template <typename V>
-int DirectedGraph<V>::addEdge(Vertex& source, Vertex& destination, EdgeType type, V& distance) {
-  Edge<V> e = Edge<V>(source, destination, type, distance);
+unsigned int DirectedGraph<V>::addVertex(string name, pair<double, double> coordinates) {
+  Vertex v = Vertex(name, coordinates);
 
-  return addEdge(e);
+  adjacency_.push_back(make_pair(v, vector<unsigned int>()));
+
+  return ++(this->vertices_nb_);
 }
 
 template <typename V>
-void DirectedGraph<V>::removeEdge(Edge<V> &e) {
-  pair<Vertex&, Vertex&>& vertices = e.vertices();
-
-  int source = vertices.first.id();
-
-  auto obj = adjacency_.find(source);
-
-  if (obj == adjacency_.end())
+Edge<V> DirectedGraph<V>::getEdge(unsigned int id) {
+  if (id >= this->edges_nb_)
     return;
-
-  for (int i = 0; i < obj.second.size(); ++i)
-    if (obj.second[i] == e) {
-      obj.second.erase(obj.second.begin() + i);
-      break;
-    }
-
+  
+  return edges_[id];
 }
 
-template <typename V>
-int DirectedGraph<V>::addVertex(Vertex& v) {
 
-  return v.id();
-}
+
 
 

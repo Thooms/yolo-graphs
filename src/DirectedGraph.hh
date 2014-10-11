@@ -3,8 +3,8 @@
 #define DIRECTED_GRAPH_HH
 
 #include <string>
-#include <unordered_map>
 #include <vector>
+#include <utility>
 
 #include "Graph.hh"
 #include "Vertex.hh"
@@ -15,30 +15,30 @@ using namespace std;
 template <typename V>
 class DirectedGraph : public Graph<V> {
 private:
-  unordered_map<int, vector<int> > adjacency_;
-  unordered_map<int, Edge<V>&> edges_;
+  vector<pair<Vertex, vector<unsigned int> > > adjacency_;
+  vector<Edge<V> > edges_;
 
 public:
   /* Constructors */
 
   DirectedGraph() : Graph<V>() {}
 
-  DirectedGraph(string name) : Graph<V>(name) { }
+  DirectedGraph(string name) : Graph<V>(name) {}
 
   /* Methods */
 
-  int addEdge(Edge<V>&);
-  int addEdge(Vertex&, Vertex&, EdgeType, V&);
+  virtual unsigned int addEdge(EdgeType type, V distance, unsigned int start, unsigned int end);
 
-  void removeEdge(Edge<V>&);
+  virtual unsigned int addVertex(string name, pair<double, double> coordinates);
 
-  int addVertex(Vertex&);
+  virtual Edge<V> getEdge(unsigned int);
+  
+  virtual Vertex getVertex(unsigned int);
 
-  void removeVertex(Vertex&);
+  virtual vector<Edge<V>*> outgoingEdges(unsigned int);
 
-  vector<const Edge<V>&> outgoingEdges(Vertex&);
+  virtual vector<Vertex*> adjacentVertices(unsigned int);
 
-  vector<const Vertex&> adjacentVertices(Vertex&);
 
   /* Destructor */
 
