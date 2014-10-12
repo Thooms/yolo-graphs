@@ -14,23 +14,26 @@ template <typename V>
 class ComputationUnit {
 private:
   // TODO: make the graph ref const, and adapt the code thereof
-  Graph<V>& graph_;
-
-public:
+  Graph<V>* graph_;
   
   /* Constructors */
   
   explicit ComputationUnit();
-  explicit ComputationUnit(Graph<V>& g);
+  explicit ComputationUnit(Graph<V>* g);
+
+
+public:
 
   /* {Get,Set}ters */
 
   Graph<V>& graph(void);
-  void setGraph(Graph<V>& g);
+  void setGraph(Graph<V>* g);
   
-  std::vector<Vertex*> bfs(Vertex& start, unsigned int depth, std::function<Edge<V>& (bool)> filter);
-  std::vector<Vertex*> dfs(Vertex& start, unsigned int depth, std::function<Edge<V>& (bool)> filter);
-  std::vector<Vertex*> shortestPath(Vertex& start, Vertex& end, std::function<Edge<V>& (bool)> filter);
+  std::vector<Vertex> bfs(unsigned int start, unsigned int depth, std::function<bool (Edge<V>&)> filter);
+  std::vector<Vertex> dfs(Vertex start, unsigned int depth, std::function<bool (Edge<V>&)> filter);
+  std::vector<Vertex> shortestPath(Vertex start, Vertex end, std::function<bool (Edge<V>&)> filter);
+
+  static ComputationUnit<V>& instance(void);
 };
 
 #endif
