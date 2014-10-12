@@ -1,6 +1,6 @@
 
 CC=clang++
-CFLAGS=-Weverything -Wall -Werror -pedantic -std=c++11 -c -Wno-error=c++98-compat
+CFLAGS= -Wall -Werror -pedantic -std=c++11 -c -Wno-error=c++98-compat
 LDFLAGS=
 EXEC=yolo-graphs
 
