@@ -1,0 +1,65 @@
+
+\section{Analyse}
+
+L'étape d'analyse est primordiale dans tout projet de moyenne ou grande
+envergure, ce projet de graphes rentre bien dans cette catégorie. En
+effet, il nous est demandé de représenter des graphes (qui peuvent se
+représenter de manière différente selon les besoins que l'on a) et de
+leur appliquer quelques algorithmes (dont l'expression dépend également
+de la représentation des graphes).
+
+Nous devons également implémenter de quoi lire un graphe depuis une
+entrée donnée, ainsi que d'écrire un graphe vers une sortie donnée.
+
+Tout au long de la phase analytique, une phrase revenait dans notre
+manière de faire : « Penser en amont pour mieux servir en aval »,
+autrement dit, nous avons essayé d'organiser le code de façon à ce
+qu'il soit maintenable plus tard et que nous puissons lui ajouter
+des améliorations au fil du temps.
+
+Pour donner un petit exemple, pour lire un graphe, nous utilisons une
+méthode qui nous permet de le faire de plusieurs méthodes, et il est
+aisé d'ajouter/de retirer une méthode à cette liste.
+
+\subsection{Diagramme de classes}
+
+\begin{figure}
+	\includepdf[pages={{},-}]{misc/class_diagram.pdf}
+\end{figure}
+
+\newpage
+
+\subsection{Unité de calcul (ComputationUnit)}
+
+L'unité de calcul représente la boite à outil de notre programme, c'est
+ici que sont implémentés les principaux algorithmes demandés.
+
+L'unité a besoin d'un graphe, à partir duquel les calculs seront
+effectués, c'est pourquoi il y a une agrégation entre ces deux classes.
+De plus, il est assez aisé de remarquer qu'il n'y aura qu'une seule
+unité de calcul (on pourra éventuellement changer le graphe sur lequel
+elle travaille), c'est ici que le pattern \textbf{Singleton} entre en
+jeu, pour nous assurer que nous n'avons qu'une seule instance de
+l'unité de calcul.
+\newline
+
+
+Les algorithmes implémentés dans l'unité de calcul sont le parcours en
+largeur, le parcours en profondeur ainsi que l'algorithme de Dijkstra
+pour trouver le plus court chemin entre deux villes. Ils sont tous
+paramétrés par une fonction de \textit{filtre}.
+
+Un filtre prend en paramètre une arête et renvoit un booléen, pour
+savoir s'il faut prendre l'arête en compte lors du déroulement de
+l'algorithme. Cela sert par exemple si l'on souhaite connaitre toutes
+les villes accessible par la route, depuis une ville donnée.
+Il y a simplement à implémenter la fonction de filtre de façon à ce
+qu'elle renvoit \texttt{true} si l'arête est une route :
+
+\begin{verbatim}
+    bool filter_road(Edge<V>& e) {
+        return (e.type() == EdgeType::Road);
+    }
+\end{verbatim}
+
+
