@@ -5,4 +5,7 @@ yolo-graphs
 *.dot
 .idea/
 report/includes/
-!report/*.tex
+*.aux
+*.log
+*.pdf
+*.toc
