@@ -1,15 +1,26 @@
 #include "DotGraphOutput.hh"
 #include "EdgeType.hh"
 
-string getEdgeStyle(EdgeType t) {
+#include <sstream>
+
+template <typename V>
+string getEdgeStyle(EdgeType t, V val) {
+  
+  stringstream ss;
+  string end("\"]");
+
   switch (t) {
   case EdgeType::Plane:
-    return "[color=red]";
+    ss << string("[color=red, label=\"") << val << end;
+    break;
   case EdgeType::Train:
-    return "[color=blue,style=dotted]";
+    ss << string("[color=blue, style=dotted, label=\"") << val << end ;
+    break;
   default:
-    return "";
+    ss << string("[label=\"") << val << end;
+    break;
   }
+  return ss.str();
 }
 
 template <typename V>
@@ -22,10 +33,13 @@ void DotGraphOutput<V>::output(string path) {
   st << "digraph " << this->graph_.name() << " {" << endl;
 
   for (unsigned int i = 0; i < this->graph_.verticesNb(); i++)
+    st << "\t" << i << " [label=\"" << this->graph_.getVertex(i).name() << "\"];" << endl;
+
+  for (unsigned int i = 0; i < this->graph_.verticesNb(); i++)
     for (auto e : this->graph_.outgoingEdges(i)) {
-      st << "\t" << this->graph_.getVertex(i).name()
-	 << " -> " << this->graph_.getVertex(e->getOtherEnd(i)).name()
-	 << " " << getEdgeStyle(e->type()) 
+      st << "\t" << i
+	 << " -> " << e->getOtherEnd(i)
+	 << " " << getEdgeStyle(e->type(), e->distance()) 
 	 << ";" << endl;
     }
 
