@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <utility>
 
 #include "Graph.hh"
 #include "GraphInput.hh"
@@ -28,7 +29,7 @@ public:
 
     for (int i = 0; i < v; i++) {
       ifs >> tmp;
-      this->graph_.addVertex(Vertex(tmp));
+      this->graph_.addVertex(tmp, make_pair(0.0, 0.0));
     }
     
   }

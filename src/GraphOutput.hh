@@ -8,8 +8,9 @@ template <typename T, typename V>
 class GraphOutput {
 protected:
   Graph<V>& graph_;
+
 public:
-  GraphOutput(Graph<V>& g);
+  GraphOutput(Graph<V>& g) : graph_(g) {}
 
   /* Outputs the graph. */
   virtual void output(T outputdata) = 0;
