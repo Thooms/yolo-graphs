@@ -2,12 +2,14 @@
 
 Vertex::Vertex() {}
 
-Vertex::Vertex(string& name) {
+Vertex::Vertex(unsigned int id, string& name) {
   setName(name);
+  id_ = id;
 }
 
-Vertex::Vertex(string& name, pair<double, double>& coordinates) {
+Vertex::Vertex(unsigned int id, string& name, pair<double, double>& coordinates) {
   setName(name);
+  id_ = id;
   coordinates_ = coordinates;
 }
 

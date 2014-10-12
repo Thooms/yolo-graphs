@@ -18,8 +18,8 @@ public:
   /* Constructors */
 
   explicit Vertex();
-  explicit Vertex(string&);
-  explicit Vertex(string&, pair<double, double>&);
+  explicit Vertex(unsigned int, string&);
+  explicit Vertex(unsigned int, string&, pair<double, double>&);
 
   /* {Get, Set}ters */
   unsigned int id(void);
