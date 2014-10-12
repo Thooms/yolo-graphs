@@ -3,3 +3,5 @@ build/
 *~
 yolo-graphs
 .idea/
+report/includes/
+!report/*.tex
