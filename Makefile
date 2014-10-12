@@ -18,6 +18,8 @@ $(EXEC): $(OBJECTS)
 $(OBJECTS): $(BUILDDIR)/%.o: $(SOURCEDIR)/%.cc
 	$(CC) $(CFLAGS) $(LDFLAGS) $< -o $@
 
+rebuild: mrproper all
+
 clean:
 	rm -rf $(BUILDDIR)/*.o
 
