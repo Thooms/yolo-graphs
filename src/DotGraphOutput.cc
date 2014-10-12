@@ -24,7 +24,7 @@ void DotGraphOutput<V>::output(string path) {
   for (unsigned int i = 0; i < this->graph_.verticesNb(); i++)
     for (auto e : this->graph_.outgoingEdges(i)) {
       st << "\t" << i 
-	 << " " << e->getOtherEnd(i) 
+	 << " -> " << e->getOtherEnd(i) 
 	 << " " << getEdgeStyle(e->type()) 
 	 << ";" << endl;
     }
