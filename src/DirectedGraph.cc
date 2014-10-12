@@ -1,8 +1,5 @@
 #include "DirectedGraph.hh"
 
-#include <utility>
-#include <vector>
-
 #include "Edge.hh"
 #include "EdgeType.hh"
 #include "Vertex.hh"
@@ -14,8 +11,8 @@ using namespace std;
 template <typename V>
 unsigned int DirectedGraph<V>::addEdge(EdgeType type, V distance, unsigned int start, unsigned int end) {
 
-  Edge<V> e = Edge<V>(this->edges_nb, start, end, type, distance);
-  this->edges_nb++;
+  Edge<V> e = Edge<V>(this->edges_nb_, start, end, type, distance);
+  this->edges_nb_++;
 
   if (start >= this->vertices_nb_ || end >= this->vertices_nb_)
     return -1;
@@ -37,8 +34,8 @@ unsigned int DirectedGraph<V>::addVertex(string name, pair<double, double> coord
 
 template <typename V>
 Edge<V> DirectedGraph<V>::getEdge(unsigned int id) {
-  if (id >= this->edges_nb_)
-    return;
+  // if (id >= this->edges_nb_)
+  //  return;
   
   return edges_[id];
 }
@@ -70,13 +67,17 @@ vector<Vertex*> DirectedGraph<V>::adjacentVertices(unsigned int id) {
   // if (id >= adjacency_.size())
   //  return;
 
-  vector<Vertex*> vertices(adjacency_[id].second.size());
-  int j(0);
+  vector<Vertex*> vertices;
+  vector<bool> inserted(this->vertices_nb_, false);
 
   for (auto i : adjacency_[id].second) {
     Edge<V> edge = edges_[i];
+    int other_id = edge.getOtherEnd(id);
 
-    vertices[j++] = &adjacency_[edge.getOtherEnd(id)].first;
+    if (!inserted[other_id]) {
+      inserted[other_id] = true;
+      vertices.push_back(&adjacency_[other_id].first);
+    }
   }
 
   return vertices;
@@ -91,3 +92,8 @@ DirectedGraph<V>::~DirectedGraph() {
   edges_.clear();
 }
 
+
+// Types of directed graphs that can be instantiated
+template class DirectedGraph<double>;
+template class DirectedGraph<float>;
+template class DirectedGraph<int>;

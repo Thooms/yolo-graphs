@@ -20,14 +20,22 @@ protected:
   unsigned int edges_nb_;
   
 public:
-  explicit Graph();
-  explicit Graph(string name);
+  explicit Graph() {
+    vertices_nb_ = 0;
+    edges_nb_ = 0;
+  }
+
+  explicit Graph(string name) {
+    setName(name);
+    vertices_nb_ = 0;
+    edges_nb_ = 0;
+  }
 
   // NOTE: No setter, the only way to modify it is to add a vertex
-  unsigned int verticesNb(void);
+  unsigned int verticesNb(void) { return vertices_nb_; }
   
   // NOTE: No setter as well
-  unsigned int edgesNb(void);
+  unsigned int edgesNb(void) { return edges_nb_; }
   
   /* Adds an edge and returns its id */
   virtual unsigned int addEdge(EdgeType type, V distance, unsigned int start, unsigned int end) = 0;

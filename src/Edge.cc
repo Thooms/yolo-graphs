@@ -43,14 +43,18 @@ pair<unsigned int, unsigned int>& Edge<V>::vertices(void) {
 
 template <typename V>
 unsigned int Edge<V>::getOtherEnd(unsigned int id) {
-  switch (id) {
-  case vertices_.first:
+  if (id == vertices_.first)
     return vertices_.second;
 
-  case vertices_.second:
+  if (id == vertices_.second)
     return vertices_.first;
 
-  default: // Bad id is given
-    return -1;
-  }
+  // Bad id is given
+  return -1;
 }
+
+
+// Types of edges that can be instantiated
+template class Edge<double>;
+template class Edge<float>;
+template class Edge<int>;
