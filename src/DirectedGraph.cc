@@ -4,7 +4,6 @@
 #include "EdgeType.hh"
 #include "Vertex.hh"
 
-
 using namespace std;
 
 
@@ -25,11 +24,12 @@ unsigned int DirectedGraph<V>::addEdge(EdgeType type, V distance, unsigned int s
 
 template <typename V>
 unsigned int DirectedGraph<V>::addVertex(string name, pair<double, double> coordinates) {
-  Vertex v = Vertex(name, coordinates);
+  Vertex v = Vertex(this->vertices_nb_, name, coordinates);
+  this->vertices_nb_++;
 
   adjacency_.push_back(make_pair(v, vector<unsigned int>()));
 
-  return ++(this->vertices_nb_);
+  return v.id();
 }
 
 template <typename V>
