@@ -10,7 +10,7 @@ private:
 
 public:
 
-  explicit Nameable() {};
+  explicit Nameable() {}
 
   std::string name(void);
   void setName(std::string&);

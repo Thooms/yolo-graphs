@@ -7,6 +7,7 @@
 #include "Edge.hh"
 #include "EdgeType.hh"
 #include "Vertex.hh"
+#include "DotGraphOutput.hh"
 
 using namespace std;
 
@@ -36,6 +37,10 @@ int main(void) {
   for (auto vertex : cu.bfs(0, 2, true__))
   	std::cout << vertex.name() << " ";
   std::cout << std::endl;
+
+  DotGraphOutput<double> out(g);
+
+  out.output("truc.dot");
 
   return 0;
 }
