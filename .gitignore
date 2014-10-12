@@ -2,6 +2,7 @@ build/
 *.o
 *~
 yolo-graphs
+*.dot
 .idea/
 report/includes/
 !report/*.tex
