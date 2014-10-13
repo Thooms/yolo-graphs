@@ -1,36 +1,60 @@
-#include <string>
-#include <iostream>
-#include <fstream>
-#include <utility>
 
-#include "Graph.hh"
-#include "GraphInput.hh"
-#include "Vertex.hh"
+#include "RawTextGraphInput.hh"
 
-using namespace std;
+/*
+  name
+  |V|
+  [|V| names]
+  |E|
+  [|E| lines formatted like start end type distance]
+ */
 
 template <typename V>
-class RawTextGraphInput : public GraphInput<string, V> {
-public:
+void RawTextGraphInput<V>::input(string path) {
+  cout << "Fetching graph from file " << path << endl;
   
-  RawTextGraphInput(Graph<V>& g) : GraphInput<string, V>(g) {}
+  ifstream ifs(path, ifstream::in);
   
-  void input(string path) {
-    cout << "Fetching graph from file " << path << endl;
+  int v, e;
+  string title;
 
-    ifstream ifs(path, ifstream::in);
+  // Graph title fetching
 
-    int v;
-    string tmp;
+  ifs >> title;
 
-    /* We parse a vertex number, and a list of vertices names */
-    
-    ifs >> v;
+  this->graph_.setName(title);
 
-    for (int i = 0; i < v; i++) {
-      ifs >> tmp;
-      this->graph_.addVertex(tmp, make_pair(0.0, 0.0));
-    }
-    
+  // Vertices fetching
+
+  ifs >> v;
+
+  for (int i = 0; i < v; i++) {
+    ifs >> title;
+    this->graph_.addVertex(title, make_pair(0,0));
   }
-};
+
+  // Edges fetching
+
+  unsigned int start, end;
+  string type;
+  EdgeType t;
+  V dist;
+
+  ifs >> e;
+
+  for (int i = 0; i < e; i++) {
+    ifs >> start >> end >> type >> dist;
+    if (type == "Train")
+      t = EdgeType::Train;
+    else if (type == "Road")
+      t = EdgeType::Road;
+    else
+      t = EdgeType::Plane;
+
+    this->graph_.addEdge(t, dist, start, end);
+  }
+  
+  cout << "Fetched graph successfully." << endl;
+}
+
+template class RawTextGraphInput<double>;
