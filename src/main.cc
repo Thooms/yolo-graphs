@@ -18,7 +18,7 @@ int main(void) {
   DirectedGraph<double> g;
   RawTextGraphInput<double> in(g);
 
-  in.input("tests/directed_20_100.yolo");
+  in.input("tests/graphtests/test.yolo");
 
   auto& cu = ComputationUnit<double>::instance();
   cu.setGraph(&g);
@@ -29,6 +29,11 @@ int main(void) {
   	std::cout << vertex.name() << " ";
   std::cout << std::endl;
 
+  cout << "DFS from vertex " << g.getVertex(0).name() << endl;
+
+  for (auto vertex : cu.dfs(0, 2, true__))
+  	std::cout << vertex.name() << " ";
+  std::cout << std::endl;
 
 
   DotGraphOutput<double> out(g);
