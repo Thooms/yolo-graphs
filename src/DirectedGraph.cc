@@ -1,9 +1,5 @@
 #include "DirectedGraph.hh"
 
-#include "Edge.hh"
-#include "EdgeType.hh"
-#include "Vertex.hh"
-
 using namespace std;
 
 
@@ -13,7 +9,7 @@ unsigned int DirectedGraph<V>::addEdge(EdgeType type, V distance, unsigned int s
   Edge<V> e = Edge<V>(this->edges_nb_, start, end, type, distance);
   this->edges_nb_++;
 
-  if (start >= this->vertices_nb_ || end >= this->vertices_nb_)
+  if ((start >= this->vertices_nb_) || (end >= this->vertices_nb_))
     return -1;
   
   adjacency_[start].second.push_back(e.id());

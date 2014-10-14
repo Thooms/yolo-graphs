@@ -7,14 +7,15 @@
 #include <utility>
 
 #include "Graph.hh"
-#include "Vertex.hh"
+#include "EdgeType.hh"
 #include "Edge.hh"
+#include "Vertex.hh"
 
 using namespace std;
 
 template <typename V>
 class DirectedGraph : public Graph<V> {
-private:
+protected:
   vector< pair< Vertex, vector<unsigned int> > > adjacency_;
   vector< Edge<V> > edges_;
 
