@@ -4,6 +4,7 @@
 
 #include "ComputationUnit.hh"
 #include "DirectedGraph.hh"
+#include "UndirectedGraph.hh"
 #include "Edge.hh"
 #include "EdgeType.hh"
 #include "Vertex.hh"
@@ -15,7 +16,7 @@ using namespace std;
 bool true__(Edge<double>& e) { if (e.distance() >= 0.0) return true; return true; }
 
 int main(void) {
-  DirectedGraph<double> g;
+  UndirectedGraph<double> g;
   RawTextGraphInput<double> in(g);
 
   in.input("tests/graphtests/test.yolo");
@@ -25,13 +26,13 @@ int main(void) {
 
   cout << "BFS from vertex " << g.getVertex(0).name() << endl;
 
-  for (auto vertex : cu.bfs(0, 2, true__))
+  for (auto vertex : cu.bfs(0, 0, true__))
   	std::cout << vertex.name() << " ";
   std::cout << std::endl;
 
   cout << "DFS from vertex " << g.getVertex(0).name() << endl;
 
-  for (auto vertex : cu.dfs(0, 2, true__))
+  for (auto vertex : cu.dfs(0, 0, true__))
   	std::cout << vertex.name() << " ";
   std::cout << std::endl;
 
