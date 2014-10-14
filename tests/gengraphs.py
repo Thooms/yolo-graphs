@@ -1,7 +1,8 @@
 import random
+import sys
 
 if __name__ == '__main__':
-    V, E = 10, 50
+    V, E = map(int, sys.argv[1:3])
     path = 'directed_{}_{}.yolo'.format(V, E)
     title = 'YOLO_{}_{}'.format(V, E)
     
