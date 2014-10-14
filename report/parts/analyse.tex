@@ -21,15 +21,21 @@ Pour donner un petit exemple, pour lire un graphe, nous utilisons une
 méthode qui nous permet de le faire de plusieurs méthodes, et il est
 aisé d'ajouter/de retirer une méthode à cette liste.
 
+Suit le diagramme de classe de notre application, dont nous allons
+expliciter quelques points particuliers (qui correspondent notemment
+aux Design Pattern qui ont émergés lors de la conception et de
+l'implémentation).
+\newpage
 \subsection{Diagramme de classes}
 
-\begin{figure}
-	\includepdf[pages={{},-}]{misc/class_diagram.pdf}
+\begin{figure}[H]
+  \includepdf[pages={{},-}]{misc/class_diagram.pdf}
+  \caption{Diagramme de classe}
 \end{figure}
 
 \newpage
 
-\subsection{Unité de calcul (ComputationUnit)}
+\subsection{Unité de calcul (ComputationUnit) -- Singleton}
 
 L'unité de calcul représente la boite à outil de notre programme, c'est
 ici que sont implémentés les principaux algorithmes demandés.
@@ -41,8 +47,6 @@ unité de calcul (on pourra éventuellement changer le graphe sur lequel
 elle travaille), c'est ici que le pattern \textbf{Singleton} entre en
 jeu, pour nous assurer que nous n'avons qu'une seule instance de
 l'unité de calcul.
-\newline
-
 
 Les algorithmes implémentés dans l'unité de calcul sont le parcours en
 largeur, le parcours en profondeur ainsi que l'algorithme de Dijkstra
@@ -56,10 +60,89 @@ les villes accessible par la route, depuis une ville donnée.
 Il y a simplement à implémenter la fonction de filtre de façon à ce
 qu'elle renvoit \texttt{true} si l'arête est une route :
 
-\begin{verbatim}
+\begin{figure}[H]
+\begin{minted}{c++}
     bool filter_road(Edge<V>& e) {
         return (e.type() == EdgeType::Road);
     }
-\end{verbatim}
+\end{minted}
+\caption{Un exemple de filtre}
+\end{figure}
+
+\subsection{Graphe -- API}
+
+\subsubsection{API}
+
+Pour concevoir l'encodage des graphes, nous avons pensé immédiatement
+à nous abstraire de la représentation. Nous sommes donc arrivé à une
+API\footnote{Application Programming Interface} relativement générale.
+
+L'idée que l'utilisateur pourra manipuler les éléments consitutifs du
+graphe (nœuds, arêtes), ainsi que récupérer des collections d'éléments
+utiles (les voisins d'un nœud donné par exemple).
+
+L'API est détaillée ci dessous :
+
+\begin{figure}[H]
+\begin{minted}{c++}
+  // NOTE: No setter, the only way to modify it is to add a vertex
+  unsigned int verticesNb(void) { return vertices_nb_; }
+  
+  // NOTE: No setter as well
+  unsigned int edgesNb(void) { return edges_nb_; }
+  
+  /* Adds an edge and returns its id */
+  virtual unsigned int addEdge(EdgeType type, V distance, 
+                               unsigned int start, 
+                               unsigned int end) = 0;
+
+  /* Adds a vertex and returns its id */
+  virtual unsigned int addVertex(string name, 
+                                 pair<double, double> coordinates) = 0;
+
+  /* Getters for the graph's elements */
+  virtual Edge<V> getEdge(unsigned int) = 0;
+  
+  virtual Vertex getVertex(unsigned int) = 0;
+
+  virtual vector<Edge<V>*> outgoingEdges(unsigned int) = 0;
+
+  virtual vector<Vertex*> adjacentVertices(unsigned int) = 0;
+
+\end{minted}
+\caption{Extrait de \texttt{src/Graph.hh}}
+\end{figure}
+
+On notera que la plupart de ces méthodes sont virtuelles et non
+implémentées. Ceci nous force donc à hériter de \texttt{Graph} et à
+encoder une vraie représentation de graphe (cf
+\texttt{src/DirectedGraph.cc}). D'une certaine manière, nous avons émulé le
+mécanisme d'interfaces présentes en Go ou en Java.
+
+Un autre point à noter est que nous avons choisi une gestion très « à
+  la main » de manipulation des objets. Il était très peu pratique, en
+tant que développeur de devoir garder des pointeurs ou des références
+vers des objets, ainsi la solution la plus partique était de manipuler
+des \emph{ids}, et de \emph{retourner} des références ou des pointeurs
+vers les objets du graphes lors que c'est utile.
+
+\subsubsection{Templates}
+
+Voici un extrait du header de la classe \texttt{Graph} :
+
+\begin{figure}[H]
+\begin{minted}{c++}
+template <typename V>
+class Graph : public Nameable {
+\end{minted}
+\caption{Extrait de \texttt{src/Graph.hh}}
+\end{figure}
+
+On remarquera le \texttt{template <typename V>}, qui nous permet
+d'obtenir des graphes totalement polymorphiques (au sens programmation
+fonctionnelle du terme) en le type qui étiquette les arêtes. Ainsi,
+nous sommes totalement flexibles de ce côté là.
+
+\subsection{E/S -- Stratégie}
 
 
