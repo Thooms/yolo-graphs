@@ -28,6 +28,46 @@ void ComputationUnit<V>::setGraph(Graph<V>* g) {
 }
 
 template <typename V>
+vector<Vertex> ComputationUnit<V>::dfs(unsigned int start, unsigned int depth, function<bool (Edge<V>&)> filter) {
+  vector<Vertex> order;
+
+  stack< pair<Vertex, int> > s;
+  vector<bool> visited(graph_->verticesNb(), false);
+
+  Vertex v;
+  unsigned int id, current_depth;
+
+  // Insert the start vertex as the root of the bfs
+  s.push(make_pair(graph_->getVertex(start), 1));
+
+  while (!s.empty()) {
+    pair<Vertex, int>& head = s.top();
+
+    v = head.first;
+    id = v.id();
+    current_depth = head.second;
+
+    order.push_back(v);
+    s.pop();
+
+    // Iterate over all neighbors of the front vertex
+    for (auto edge : graph_->outgoingEdges(id))
+      if (filter(*edge)) {
+        // Query the neighbor vertex
+        Vertex neighbor = graph_->getVertex(edge->getOtherEnd(id));
+
+        // Check whether it has already been visited before or if the max depth has been reached
+        if ((current_depth != depth) && !visited[neighbor.id()]) {
+          visited[neighbor.id()] = true;
+          s.push(make_pair(neighbor, current_depth + 1));
+        }
+      }
+  }
+
+  return order;
+}
+
+template <typename V>
 vector<Vertex> ComputationUnit<V>::bfs(unsigned int start, unsigned int depth, function<bool (Edge<V>&)> filter) {
   vector<Vertex> order;
 

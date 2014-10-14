@@ -30,7 +30,7 @@ public:
   void setGraph(Graph<V>* g);
   
   std::vector<Vertex> bfs(unsigned int start, unsigned int depth, std::function<bool (Edge<V>&)> filter);
-  std::vector<Vertex> dfs(Vertex start, unsigned int depth, std::function<bool (Edge<V>&)> filter);
+  std::vector<Vertex> dfs(unsigned int start, unsigned int depth, std::function<bool (Edge<V>&)> filter);
   std::vector<Vertex> shortestPath(Vertex start, Vertex end, std::function<bool (Edge<V>&)> filter);
 
   static ComputationUnit<V>& instance(void);
