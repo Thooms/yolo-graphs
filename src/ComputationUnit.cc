@@ -39,6 +39,7 @@ vector<Vertex> ComputationUnit<V>::dfs(unsigned int start, unsigned int depth, f
 
   // Insert the start vertex as the root of the bfs
   s.push(make_pair(graph_->getVertex(start), 1));
+  visited[start] = true;
 
   while (!s.empty()) {
     pair<Vertex, int>& head = s.top();
@@ -79,6 +80,7 @@ vector<Vertex> ComputationUnit<V>::bfs(unsigned int start, unsigned int depth, f
 
   // Insert the start vertex as the root of the bfs
   q.push(make_pair(graph_->getVertex(start), 1));
+  visited[start] = true;
 
   while (!q.empty()) {
     pair<Vertex, int>& head = q.front();
