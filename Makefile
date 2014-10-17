@@ -1,22 +1,32 @@
 
 CC=clang++
-CFLAGS= -Wall -Werror -pedantic -std=c++11 -c -Wno-error=c++98-compat
-LDFLAGS=
+CFLAGS= -Wall -Werror -pedantic -std=c++11 -Wno-error=c++98-compat
+OBJECTFLAG= -c
 EXEC=yolo-graphs
 
 SOURCEDIR=src
+LIBSRCDIR=$(SOURCEDIR)/lib
+TESTSRCDIR=$(SOURCEDIR)/examples
+
 BUILDDIR=build
 
-SOURCES=$(wildcard $(SOURCEDIR)/*.cc)
-OBJECTS=$(patsubst $(SOURCEDIR)/%.cc, $(BUILDDIR)/%.o, $(SOURCES))
+LIBSOURCES=$(wildcard $(LIBSRCDIR)/*.cc)
+LIBOBJECTS=$(patsubst $(LIBSRCDIR)/%.cc, $(BUILDDIR)/%.o, $(LIBSOURCES))
 
-all: $(EXEC)
+SOURCES=$(wildcard $(TESTSRCDIR)/*.cc)
+EXECS=$(patsubst $(TESTSRCDIR)/%.cc, %, $(SOURCES))
 
-$(EXEC): $(OBJECTS)
-	$(CC) $^ -o $@
+all: tests
 
-$(OBJECTS): $(BUILDDIR)/%.o: $(SOURCEDIR)/%.cc
-	$(CC) $(CFLAGS) $(LDFLAGS) $< -o $@
+tests: lib $(EXECS)
+
+$(EXECS): %: $(TESTSRCDIR)/%.cc  
+	$(CC) $(CFLAGS) $< $(LIBOBJECTS) -I $(LIBSRCDIR) -o $@
+
+lib: $(LIBOBJECTS)
+
+$(LIBOBJECTS): $(BUILDDIR)/%.o: $(LIBSRCDIR)/%.cc
+	$(CC) $(CFLAGS) $(OBJECTFLAG) $< -o $@
 
 rebuild: mrproper all
 
@@ -24,5 +34,5 @@ clean:
 	rm -rf $(BUILDDIR)/*.o
 
 mrproper: clean
-	rm -rf $(EXEC)
+	rm -rf $(EXECS)
 	rm -rf *.dot
