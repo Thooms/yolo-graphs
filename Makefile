@@ -28,6 +28,13 @@ lib: $(LIBOBJECTS)
 $(LIBOBJECTS): $(BUILDDIR)/%.o: $(LIBSRCDIR)/%.cc
 	$(CC) $(CFLAGS) $(OBJECTFLAG) $< -o $@
 
+
+report: report/
+	cd report
+	pdflatex -shell-escape report.tex
+	rm *.{aux,log,log,toc}
+	mv report.pdf ..
+
 rebuild: mrproper all
 
 clean:
