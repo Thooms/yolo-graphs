@@ -19,7 +19,7 @@ int main(void) {
   UndirectedGraph<double> g;
   RawTextGraphInput<double> in(g);
 
-  in.input("tests/graphtests/test.yolo");
+  in << "tests/graphtests/test.yolo";
 
   auto& cu = ComputationUnit<double>::instance();
   cu.setGraph(&g);
@@ -38,7 +38,7 @@ int main(void) {
 
 
   DotGraphOutput<double> out(g);
-  out.output("truc.dot");
+  out >> "truc.dot";
 
   return 0;
 }

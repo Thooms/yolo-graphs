@@ -13,6 +13,8 @@ public:
 
   /* Fills the graph with data. */
   virtual void input(T inputdata) = 0;
+
+  void operator<<(std::string in) { input(in); }
 };
 
 #endif

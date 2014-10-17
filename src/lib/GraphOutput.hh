@@ -14,6 +14,8 @@ public:
 
   /* Outputs the graph. */
   virtual void output(T outputdata) = 0;
+
+  void operator>>(std::string out) { output(out); }
 };
 
 #endif
