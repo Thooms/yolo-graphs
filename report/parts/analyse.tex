@@ -71,6 +71,8 @@ qu'elle renvoit \texttt{true} si l'arête est une route :
 
 \subsection{Graphe -- API}
 
+\subsubsection{Graphe orienté -- Graphe non-orienté}
+
 \subsubsection{API}
 
 Pour concevoir l'encodage des graphes, nous avons pensé immédiatement
@@ -139,7 +141,7 @@ class Graph : public Nameable {
 \end{figure}
 
 On remarquera le \texttt{template <typename V>}, qui nous permet
-d'obtenir des graphes totalement polymorphiques (au sens programmation
+d'obtenir des graphes totalement polymorphes (au sens programmation
 fonctionnelle du terme) en le type qui étiquette les arêtes. Ainsi,
 nous sommes totalement flexibles de ce côté là (on pourra imaginer
 plus tard de la gestion de flots, ou de la gestion de graphes sociaux,
@@ -148,14 +150,95 @@ qui nous obligent à encoder de l'information sur les arêtes).
 \subsection{E/S -- Stratégie}
 
 Parlons maintenant des entrées et sorties (E/S). Nous souhaitions
-vraiment avoir le choix du type d'ES que nous déployerions, aussi nous
+vraiment avoir le choix du type d'ES que nous déploierons, aussi nous
 avons choisi d'implémenter cette partie du projet comme un pattern
 Stratégie.
 
-L'idée est d'utiliser deux classes \texttt{GraphInput} et
-\texttt{GraphOutput} que nous dériverons pour adapter le comportement
-aux différents inputs et outputs que nous voulons (pour le moment,
-nous avons à notre disposition une entrée par texte brut, et une
-sortie au format Dot).
+Nous avons conçu les entrées et sorties de façon à pouvoir facilement
+rajouter une méthode de lecture (ou une méthode d'écriture) d'un graphe,
+il suffit simplement de créer une classe implémentant l'interface
+\texttt{GraphInput} ou \texttt{GraphOutput} et en redéfinissant la
+méthode composant l'interface (\texttt{input} ou \texttt{output}).
+
+Pour le moment, nous avons à notre disposition une entrée par texte
+brut, et une sortie au format Dot.
 
 
+\subsection{Lecture}
+
+Nous avons choisi de créer un petit format de graphe pour les lire en
+entrée, un format intitulé \texttt{RawTextGraph}. Voici un exemple de
+graphe représenté sous ce format :
+
+\begin{figure}[H]
+\begin{minted}{haskell}
+  France          -- Nom du graphe
+  4               -- Nombre de villes
+  Paris           -- Villes
+  Lyon            -- Chaque ville a un id entre 0 et (Nombre de villes - 1)
+  Marseille       -- L'ordre importe
+  Lille
+  4               -- Nombre de liaisons entre les villes
+  0 1 Road 500.0  -- IdVille1, IdVille2, Type, Distance
+  1 2 Road 350.0
+  0 1 Train 500.0
+  0 3 Plane 200.0 -- Lien entre Paris et Lille en avion, 200km
+\end{minted}
+\caption{Exemple de graphe}
+\end{figure}
+
+Le format permet de représenter un graphe orienté de la même façon
+qu'un graphe non-orienté, la différence se fera dans le code, lors du
+chargement et l'utilisation du graphe.
+
+Pour l'implémentation, nous avons rajouté le support des opérateurs de
+flux, c'est à dire qu'au lieu, par exemple, d'utiliser
+\texttt{in.input(fichier)}, nous pouvons faire directement
+\texttt{in << fichier} (\texttt{in} étant une instance de classe
+implémentant l'interface \texttt{GraphInput}), nous pouvons voir cela
+comme « \texttt{in} reçoit le contenu de \texttt{fichier} ».
+
+
+\subsection{Écriture}
+
+Nous avons choisi d'utiliser le format de sortie \texttt{dot}, qui est
+reconnu comme un standard pour la sortie de graphe, il a pour avantages
+de supporter les graphes orientés ou non-orientés, valués ou non-valués,
+et nous pouvons donner un libellé aux sommets et afficher différement
+les arêtes, cela nous est utile ici pour représenter les différents
+types de liaisons entre les villes (route, chemin de fer,
+voie aérienne). De nombreux outils supportent ce format en entrée,
+comme par exemple l'outil \texttt{Graphviz}.
+
+Voici la sortie \texttt{dot} du graphe donné en exemple plus haut :
+
+\begin{figure}[H]
+\begin{minted}{haskell}
+digraph France {
+  0 [label="Paris"];
+  1 [label="Lyon"];
+  2 [label="Marseille"];
+  3 [label="Lille"];
+  0 -> 1 [label="500"];
+  0 -> 1 [color=blue, style=dotted, label="500"];
+  0 -> 3 [color=red, label="200"];
+  1 -> 2 [label="350"];
+}
+\end{minted}
+\caption{Exemple de graphe au format \texttt{dot}}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale=0.5]{misc/sample_graph.png}
+\end{center}
+\caption{Visualisation du graphe à l'aide de l'outil \texttt{Graphviz}}
+\end{figure}
+
+Une route est représentée par une arête noire, un chemin de fer par une
+arête bleue en pointillés et une voie aérienne par une arête rouge.
+
+
+De même que pour la lecture, nous avons ajouté le support de l'opérateur
+\texttt{>>} : \texttt{out >> fichier}, cette fois pour dire « nous
+envoyons le contenu de \texttt{out} dans \texttt{fichier} »
