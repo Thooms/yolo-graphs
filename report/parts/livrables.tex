@@ -21,3 +21,12 @@ effectue dans l'ordre les choses suivantes :
 \item On définit une classe de sortie permettant d'obtenir un fichier
   sous format Dot, pour finalement récupérer \texttt{truc.dot}.
 \end{itemize}
+
+Les seuls points un peu exotiques de ce code sont cette fonction :
+
+\begin{minted}{c++}
+  bool true__(Edge<double>& e) { (void)e; return true; }
+\end{minted}
+
+qui est en fait un filtre vide pour les parcours (le compilateur a la
+facheuse tendance à se plaindre lorsque des variables sont inutilisées).
