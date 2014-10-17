@@ -13,7 +13,7 @@
 
 using namespace std;
 
-bool true__(Edge<double>& e) { if (e.distance() >= 0.0) return true; return true; }
+bool true__(Edge<double>& e) { (void)e; return true; }
 
 int main(void) {
   UndirectedGraph<double> g;
