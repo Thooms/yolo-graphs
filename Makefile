@@ -25,3 +25,4 @@ clean:
 
 mrproper: clean
 	rm -rf $(EXEC)
+	rm -rf *.dot

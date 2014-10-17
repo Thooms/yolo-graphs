@@ -141,8 +141,21 @@ class Graph : public Nameable {
 On remarquera le \texttt{template <typename V>}, qui nous permet
 d'obtenir des graphes totalement polymorphiques (au sens programmation
 fonctionnelle du terme) en le type qui étiquette les arêtes. Ainsi,
-nous sommes totalement flexibles de ce côté là.
+nous sommes totalement flexibles de ce côté là (on pourra imaginer
+plus tard de la gestion de flots, ou de la gestion de graphes sociaux,
+qui nous obligent à encoder de l'information sur les arêtes).
 
 \subsection{E/S -- Stratégie}
+
+Parlons maintenant des entrées et sorties (E/S). Nous souhaitions
+vraiment avoir le choix du type d'ES que nous déployerions, aussi nous
+avons choisi d'implémenter cette partie du projet comme un pattern
+Stratégie.
+
+L'idée est d'utiliser deux classes \texttt{GraphInput} et
+\texttt{GraphOutput} que nous dériverons pour adapter le comportement
+aux différents inputs et outputs que nous voulons (pour le moment,
+nous avons à notre disposition une entrée par texte brut, et une
+sortie au format Dot).
 
 
