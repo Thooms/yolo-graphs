@@ -1,0 +1,23 @@
+
+\section{Livrables}
+
+\subsection{Étape 1}
+
+Pour ce premier livrable, nous devons pouvoir créer un graphe en
+mémoire, et effectuer un parcours en largeur de profondeur arbitraire
+dessus -- en notant bien que « afficher le graphe entier » revient à
+faire un parcours « jusqu'au bout ». Le fichier de test pour ce
+livrable est \texttt{src/examples/main1.cc}.
+
+Le code est relativement auto-explicatif, mais pour rappel, il
+effectue dans l'ordre les choses suivantes :
+
+\begin{itemize}
+\item On définit un graphe étiqueté par des réels, ainsi qu'une classe
+  d'entrée permettant de remplir le graphe à partir d'un fichier.
+\item On remplit le graphe selon le contenu du fichier \texttt{test.yolo}.
+\item On définit un singleton de calcul.
+\item On affiche le résultat des différents parcours demandés.
+\item On définit une classe de sortie permettant d'obtenir un fichier
+  sous format Dot, pour finalement récupérer \texttt{truc.dot}.
+\end{itemize}
