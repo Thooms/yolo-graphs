@@ -35,43 +35,7 @@ l'implémentation).
 
 \newpage
 
-\subsection{Unité de calcul (ComputationUnit) -- Singleton}
-
-L'unité de calcul représente la boite à outil de notre programme, c'est
-ici que sont implémentés les principaux algorithmes demandés.
-
-L'unité a besoin d'un graphe, à partir duquel les calculs seront
-effectués, c'est pourquoi il y a une agrégation entre ces deux classes.
-De plus, il est assez aisé de remarquer qu'il n'y aura qu'une seule
-unité de calcul (on pourra éventuellement changer le graphe sur lequel
-elle travaille), c'est ici que le pattern \textbf{Singleton} entre en
-jeu, pour nous assurer que nous n'avons qu'une seule instance de
-l'unité de calcul.
-
-Les algorithmes implémentés dans l'unité de calcul sont le parcours en
-largeur, le parcours en profondeur ainsi que l'algorithme de Dijkstra
-pour trouver le plus court chemin entre deux villes. Ils sont tous
-paramétrés par une fonction de \textit{filtre}.
-
-Un filtre prend en paramètre une arête et renvoit un booléen, pour
-savoir s'il faut prendre l'arête en compte lors du déroulement de
-l'algorithme. Cela sert par exemple si l'on souhaite connaitre toutes
-les villes accessible par la route, depuis une ville donnée.
-Il y a simplement à implémenter la fonction de filtre de façon à ce
-qu'elle renvoit \texttt{true} si l'arête est une route :
-
-\begin{figure}[H]
-\begin{minted}{c++}
-    bool filter_road(Edge<V>& e) {
-        return (e.type() == EdgeType::Road);
-    }
-\end{minted}
-\caption{Un exemple de filtre}
-\end{figure}
-
 \subsection{Graphe -- API}
-
-\subsubsection{Graphe orienté -- Graphe non-orienté}
 
 \subsubsection{API}
 
@@ -147,10 +111,80 @@ nous sommes totalement flexibles de ce côté là (on pourra imaginer
 plus tard de la gestion de flots, ou de la gestion de graphes sociaux,
 qui nous obligent à encoder de l'information sur les arêtes).
 
-\subsection{E/S -- Stratégie}
+
+\subsubsection{Graphe orienté -- Graphe non-orienté}
+
+Au cours de l'analyse, nous nous sommes rendu compte que les graphes
+que nous manipulons sont creux, c'est à dire que chaque sommet est
+relié à très peu d'autres sommets (comparé au nombre total de sommets),
+il nous est donc venu à l'esprit d'utiliser une représentation sous
+forme de listes d'adjacence.
+
+En effet, la représentation matricielle serait extrèmement coûteuse en
+mémoire, de plus elle serait parsemée de « 0 » qui nous sont inutiles.
+
+On peut noter qu'il serait aisé de représenter un graphe sous sa forme
+matricielle, il suffirait de créer des classes implémentant l'interface
+\texttt{Graph} indiquée ci-dessus.
+
+Nous avons donc représenté un graphe sous forme de listes d'adjacence,
+mais comme le graphe peut être un multigraphe, au lieu de relier les
+sommets entre eux, nous avons choisi de relier chaque sommet à toutes
+les arêtes dont il est une extrémité (nous pouvons donc récuperer
+l'autre extrémité à travers cette arête). Comme expliqué plus haut,
+pour se faciliter la tâche, nous représentons au maximum les objets par
+leur \texttt{id}, c'est pourquoi la liste est indicée par les
+identifiants des sommets, et chaque élément de la liste stocke un
+couple \texttt{(Informations sur le sommet, Arêtes)}.
+
+Un graphe orienté est donc implémenté de cette façon, pour les graphes
+non-orientés par contre, il y a une \textit{contrainte} en plus :
+lorsque nous faisons un lien du sommet \texttt{a} vers le sommet
+\texttt{b}, il faut également créer un lien du sommet \texttt{b} vers
+le sommet \texttt{a}. Ainsi, un graphe non-orienté peut être vu comme
+un graphe orienté, auquel on aura rajouté une contrainte sur ses
+arêtes. Analytiquement parlant, la représentation d'un graphe
+non-orienté \textit{hérite} de celle d'un graphe orienté, nous avons
+simplement à réimplémenter la méthode \texttt{addEdge} vue dans l'API.
+
+\subsection{Unité de calcul (ComputationUnit) -- Singleton}
+
+L'unité de calcul représente la boite à outil de notre programme, c'est
+ici que sont implémentés les principaux algorithmes demandés.
+
+L'unité a besoin d'un graphe, à partir duquel les calculs seront
+effectués, c'est pourquoi il y a une agrégation entre ces deux classes.
+De plus, il est assez aisé de remarquer qu'il n'y aura qu'une seule
+unité de calcul (on pourra éventuellement changer le graphe sur lequel
+elle travaille), c'est ici que le pattern \textbf{Singleton} entre en
+jeu, pour nous assurer que nous n'avons qu'une seule instance de
+l'unité de calcul.
+
+Les algorithmes implémentés dans l'unité de calcul sont le parcours en
+largeur, le parcours en profondeur ainsi que l'algorithme de Dijkstra
+pour trouver le plus court chemin entre deux villes. Ils sont tous
+paramétrés par une fonction de \textit{filtre}.
+
+Un filtre prend en paramètre une arête et renvoit un booléen, pour
+savoir s'il faut prendre l'arête en compte lors du déroulement de
+l'algorithme. Cela sert par exemple si l'on souhaite connaitre toutes
+les villes accessible par la route, depuis une ville donnée.
+Il y a simplement à implémenter la fonction de filtre de façon à ce
+qu'elle renvoit \texttt{true} si l'arête est une route :
+
+\begin{figure}[H]
+\begin{minted}{c++}
+    bool filter_road(Edge<V>& e) {
+        return (e.type() == EdgeType::Road);
+    }
+\end{minted}
+\caption{Un exemple de filtre}
+\end{figure}
+
+\subsection{Entrées et Sorties (E/S) -- Stratégie}
 
 Parlons maintenant des entrées et sorties (E/S). Nous souhaitions
-vraiment avoir le choix du type d'ES que nous déploierons, aussi nous
+vraiment avoir le choix du type d'E/S que nous déploierons, aussi nous
 avons choisi d'implémenter cette partie du projet comme un pattern
 Stratégie.
 

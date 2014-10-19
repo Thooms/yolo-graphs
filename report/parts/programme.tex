@@ -1,0 +1,63 @@
+
+\section{Programme}
+
+\subsection{Jeux de tests}
+
+Il y a plusieurs graphes de tests disponibles avec le projet, il sont
+situés dans le dossier \texttt{tests/graphtests}, il sont tous au
+format \texttt{RawTextGraph}.
+
+Pour le moment, nous avons un seul test généré à la main, c'est le
+fichier nommé \texttt{test.yolo} qui comporte 10 villes et 13 arêtes.
+C'est celui utilisé comme test dans le premier livrable, comme
+expliqué plus tard dans le rapport.
+
+En plus de ce test, nous avons développé un petit outil permettant de
+générer aléatoirement des graphes au format \texttt{RawTextGraph}.
+L'outil, développé en Python, est situé dans le dossier \texttt{tests},
+et se nomme \texttt{gengraphs.py}. Il prend en paramètres le nombre de
+sommets et le nombre d'arêtes voulus, et génère un graphe avec des
+arêtes placées aléatoirement, avec un type (Route, Train ou Avion)
+également aléatoire.
+
+Cet outil nous permet d'avoir un jeu de tests très évolué : beaucoup
+de sommets et très peu d'arêtes, très peu de sommets et beaucoup
+d'arêtes, etc... C'est utile pour tester la fiabilité de nos
+algorithmes ainsi que leur rapidité, l'objectif étant de pouvoir
+manipuler des graphes d'une taille assez grande, de façon à simuler
+le fait que l'outil pourrait être utilisé « dans la vraie vie ».
+
+
+\subsection{Compilation}
+
+Le projet est séparé en deux parties distinctes :
+\begin{itemize}
+\item La librairie, qui contient l'API détaillée auparavant, dans le
+dossier \texttt{src/lib}
+\item Les jeux de tests, qui contiennent tous les tests disponibles
+pour évaluer l'API, situés dans le dossier \texttt{src/examples}
+\end{itemize}
+
+Il est possible de compiler séparément librairie et jeu de tests,
+sachant que les tests requièrent que l'API ait été compiléé pour se
+compiler eux aussi.
+
+Pour compiler simplement la librarie, il suffit de faire
+\texttt{make lib}, et tous les fichiers objets se trouveront dans le
+dossier \texttt{build}.
+
+Pour compiler les tests, un simple \texttt{make} suffit, et chacun des
+fichiers \texttt{.cc} contenus dans le dossier \texttt{src/examples}
+sera compilé et son exécutable se retrouvera à la racine du projet.
+
+
+\subsection{Exécution}
+
+Pour exécuter les tests séparément, il suffit de lancer l'exécutable
+généré lors de la compilation. Pour faciliter la tâche si plusieurs
+tests ont été compilés, nous avons fait un petit script permettant de
+lancer tous les tests à la suite.
+
+Si l'outil \texttt{Graphviz} est installé, l'outil récupère tous les
+fichiers au format \texttt{dot} et en fait des fichiers \texttt{svg}
+qui peuvent ensuite être visualisés.
