@@ -11,7 +11,6 @@
 
 template <typename V>
 void RawTextGraphInput<V>::input(string path) {
-  cout << "Fetching graph from file " << path << endl;
   
   ifstream ifs(path, ifstream::in);
   
@@ -53,8 +52,6 @@ void RawTextGraphInput<V>::input(string path) {
 
     this->graph_.addEdge(t, dist, start, end);
   }
-  
-  cout << "Fetched graph successfully." << endl;
 }
 
 template class RawTextGraphInput<double>;

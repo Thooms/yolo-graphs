@@ -26,8 +26,6 @@ string getEdgeStyle(EdgeType t, V val) {
 template <typename V>
 void DotGraphOutput<V>::output(string path) {
 
-  cout << "Exporting " << this->graph_.name() << " to " << path << endl;
-
   ofstream st(path, ofstream::out);
 
   st << "digraph " << this->graph_.name() << " {" << endl;
