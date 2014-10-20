@@ -13,6 +13,11 @@ using namespace std;
 
 template <typename V>
 class Graph : public Nameable {
+  friend ostream& operator<<(ostream& out, Graph& g) {
+    out << g.name();
+    return out;
+  }
+
 protected:
 
   /* The next available id for each object id *_nb_. */

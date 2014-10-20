@@ -2,7 +2,10 @@
 #ifndef NAMEABLE_HH
 #define NAMEABLE_HH
 
+#include <iostream>
 #include <string>
+
+using namespace std;
 
 class Nameable {
 private:
@@ -12,9 +15,8 @@ public:
 
   explicit Nameable() {}
 
-  std::string name(void);
-  void setName(std::string&);
-
+  string name(void);
+  void setName(string&);
 };
 
 #endif
