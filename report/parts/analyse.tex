@@ -14,7 +14,7 @@ entrée donnée, ainsi que d'écrire un graphe vers une sortie donnée.
 Tout au long de la phase analytique, une phrase revenait dans notre
 manière de faire : « Penser en amont pour mieux servir en aval »,
 autrement dit, nous avons essayé d'organiser le code de façon à ce
-qu'il soit maintenable plus tard et que nous puissons lui ajouter
+qu'il soit maintenable plus tard et que nous puissions lui ajouter
 des améliorations au fil du temps.
 
 Pour donner un petit exemple, pour lire un graphe, nous utilisons une
@@ -23,7 +23,7 @@ aisé d'ajouter/de retirer une méthode à cette liste.
 
 Suit le diagramme de classe de notre application, dont nous allons
 expliciter quelques points particuliers (qui correspondent notemment
-aux Design Pattern qui ont émergés lors de la conception et de
+aux Design Patterns qui ont émergés lors de la conception et de
 l'implémentation).
 \newpage
 \subsection{Diagramme de classes}
@@ -43,7 +43,7 @@ Pour concevoir l'encodage des graphes, nous avons pensé immédiatement
 à nous abstraire de la représentation. Nous sommes donc arrivé à une
 API\footnote{Application Programming Interface} relativement générale.
 
-L'idée que l'utilisateur pourra manipuler les éléments consitutifs du
+L'idée que l'utilisateur pourra manipuler les éléments constitutifs du
 graphe (nœuds, arêtes), ainsi que récupérer des collections d'éléments
 utiles (les voisins d'un nœud donné par exemple).
 
@@ -74,23 +74,22 @@ L'API est détaillée ci dessous :
   virtual vector<Edge<V>*> outgoingEdges(unsigned int) = 0;
 
   virtual vector<Vertex*> adjacentVertices(unsigned int) = 0;
-
 \end{minted}
 \caption{Extrait de \texttt{src/Graph.hh}}
 \end{figure}
 
 On notera que la plupart de ces méthodes sont virtuelles et non
 implémentées. Ceci nous force donc à hériter de \texttt{Graph} et à
-encoder une vraie représentation de graphe (cf
-\texttt{src/DirectedGraph.cc}). D'une certaine manière, nous avons émulé le
-mécanisme d'interfaces présentes en Go ou en Java.
+écrire une vraie représentation de graphe (cf
+\texttt{src/DirectedGraph.cc}). D'une certaine manière, nous avons
+émulé le mécanisme d'interfaces présentes en Go ou en Java.
 
 Un autre point à noter est que nous avons choisi une gestion très « à
   la main » de manipulation des objets. Il était très peu pratique, en
-tant que développeur de devoir garder des pointeurs ou des références
-vers des objets, ainsi la solution la plus partique était de manipuler
+tant que développeur, de devoir garder des pointeurs ou des références
+vers des objets, aussi nous avons choisi d'exposer plutôt
 des \emph{ids}, et de \emph{retourner} des références ou des pointeurs
-vers les objets du graphes lors que c'est utile.
+vers les objets du graphes lors que c'était utile.
 
 \subsubsection{Templates}
 
@@ -98,29 +97,31 @@ Voici un extrait du header de la classe \texttt{Graph} :
 
 \begin{figure}[H]
 \begin{minted}{c++}
-template <typename V>
-class Graph : public Nameable {
+  template <typename V>
+  class Graph : public Nameable {
 \end{minted}
 \caption{Extrait de \texttt{src/Graph.hh}}
 \end{figure}
 
 On remarquera le \texttt{template <typename V>}, qui nous permet
 d'obtenir des graphes totalement polymorphes (au sens programmation
-fonctionnelle du terme) en le type qui étiquette les arêtes. Ainsi,
-nous sommes totalement flexibles de ce côté là (on pourra imaginer
-plus tard de la gestion de flots, ou de la gestion de graphes sociaux,
-qui nous obligent à encoder de l'information sur les arêtes).
+fonctionnelle du terme) en le type qui étiquette les
+arêtes\footnote{Ou presque, les paramètre de types doivent implémenter
+  une comparaison ainsi que les opérateurs de flux.}. Ainsi, nous
+sommes complètement flexibles de ce côté là (on pourra imaginer plus
+tard de la gestion de flots, ou de la gestion de graphes sociaux, qui
+nous obligent à ajouter de l'information sur les arêtes).
 
 
 \subsubsection{Graphe orienté -- Graphe non-orienté}
 
 Au cours de l'analyse, nous nous sommes rendu compte que les graphes
-que nous manipulons sont creux, c'est à dire que chaque sommet est
+que nous manipulons sont peu denses, c'est à dire que chaque sommet est
 relié à très peu d'autres sommets (comparé au nombre total de sommets),
 il nous est donc venu à l'esprit d'utiliser une représentation sous
 forme de listes d'adjacence.
 
-En effet, la représentation matricielle serait extrèmement coûteuse en
+En effet, la représentation matricielle serait extrêmement coûteuse en
 mémoire, de plus elle serait parsemée de « 0 » qui nous sont inutiles.
 
 On peut noter qu'il serait aisé de représenter un graphe sous sa forme
@@ -174,9 +175,9 @@ qu'elle renvoit \texttt{true} si l'arête est une route :
 
 \begin{figure}[H]
 \begin{minted}{c++}
-    bool filter_road(Edge<V>& e) {
-        return (e.type() == EdgeType::Road);
-    }
+  bool filter_road(Edge<V>& e) {
+      return (e.type() == EdgeType::Road);
+  }
 \end{minted}
 \caption{Un exemple de filtre}
 \end{figure}
@@ -248,16 +249,16 @@ Voici la sortie \texttt{dot} du graphe donné en exemple plus haut :
 
 \begin{figure}[H]
 \begin{minted}{haskell}
-digraph France {
-  0 [label="Paris"];
-  1 [label="Lyon"];
-  2 [label="Marseille"];
-  3 [label="Lille"];
-  0 -> 1 [label="500"];
-  0 -> 1 [color=blue, style=dotted, label="500"];
-  0 -> 3 [color=red, label="200"];
-  1 -> 2 [label="350"];
-}
+  digraph France {
+    0 [label="Paris"];
+    1 [label="Lyon"];
+    2 [label="Marseille"];
+    3 [label="Lille"];
+    0 -> 1 [label="500"];
+    0 -> 1 [color=blue, style=dotted, label="500"];
+    0 -> 3 [color=red, label="200"];
+    1 -> 2 [label="350"];
+  }
 \end{minted}
 \caption{Exemple de graphe au format \texttt{dot}}
 \end{figure}
