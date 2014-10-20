@@ -22,31 +22,34 @@ int main(void) {
   // Read the graph from test.yolo
   in << "tests/graphtests/test.yolo";
 
+  cout << "Manipulating graph '" << g << "'" << endl;
+
 
   // Get the computation unit
   auto& cu = ComputationUnit<double>::instance();
   cu.setGraph(&g);
 
+  Vertex base = g.getVertex(0);
 
   // City and its neighbors
-  cout << g.getVertex(0).name() << " neighbors: ";
+  cout << base << " neighbors: ";
 
   for (auto vertex : cu.bfs(0, 2, true__))
-  	cout << vertex.name() << " ";
+  	cout << vertex << " ";
   cout << endl;
 
   // City, its neighbors and their neighbors
-  cout << g.getVertex(0).name() << " neighbors, and their neighbors: ";
+  cout << base << " neighbors, and their neighbors: ";
 
   for (auto vertex : cu.bfs(0, 3, true__))
-  	cout << vertex.name() << " ";
+  	cout << vertex << " ";
   cout << endl;
 
   // All cities
-  cout << "All cities, starting from " << g.getVertex(0).name() << ": ";
+  cout << "All cities, starting from " << base << ": ";
 
   for (auto vertex : cu.bfs(0, 0, true__))
-    cout << vertex.name() << " ";
+    cout << vertex << " ";
   cout << endl;
 
 
