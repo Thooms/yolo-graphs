@@ -10,8 +10,6 @@
 using namespace std;
 
 class Vertex : public Nameable {
-  friend ostream& operator<<(ostream& out, Vertex& v);
-
 private:
   unsigned int id_;
   pair<double, double> coordinates_;

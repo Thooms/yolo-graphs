@@ -5,6 +5,11 @@
 
 using namespace std;
 
+ostream& operator<<(ostream& out, Nameable& n) {
+  out << n.name();
+  return out;
+}
+
 string Nameable::name(void) {
   return name_;
 }

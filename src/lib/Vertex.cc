@@ -1,10 +1,5 @@
 #include "Vertex.hh"
 
-ostream& operator<<(ostream& out, Vertex& v) {
-    out << v.name();
-    return out;
-  }
-
 Vertex::Vertex() {}
 
 Vertex::Vertex(unsigned int id, string& name) {

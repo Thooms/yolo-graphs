@@ -8,8 +8,10 @@
 using namespace std;
 
 class Nameable {
+  friend ostream& operator<<(ostream& out, Nameable& n);
+
 private:
-  std::string name_;
+  string name_;
 
 public:
 
