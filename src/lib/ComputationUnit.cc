@@ -159,7 +159,7 @@ pair<vector<Vertex>, V> ComputationUnit<V>::shortestPath(unsigned int start, uns
     for (auto edge : graph_->outgoingEdges(curr.second)) {
       if (filter(*edge)) {
         o_id = edge->getOtherEnd(curr.second);
-        tmp = distances[curr.second] + edge->distance();
+        tmp = distances[curr.second] + edge->cost();
 
         if (distances[o_id] == -1 || tmp < distances[o_id]) {
           distances[o_id] = tmp;
