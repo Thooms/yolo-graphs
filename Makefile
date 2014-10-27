@@ -37,3 +37,5 @@ clean:
 mrproper: clean
 	rm -rf $(EXECS)
 	rm -rf *.dot
+	rm -rf *.svg
+	rm -rf main{1,2,3,4}
