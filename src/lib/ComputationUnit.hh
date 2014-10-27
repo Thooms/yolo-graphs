@@ -29,9 +29,12 @@ public:
   Graph<V>& graph(void);
   void setGraph(Graph<V>* g);
   
-  std::vector<Vertex> bfs(unsigned int start, unsigned int depth, std::function<bool (Edge<V>&)> filter);
-  std::vector<Vertex> dfs(unsigned int start, unsigned int depth, std::function<bool (Edge<V>&)> filter);
-  std::vector<Vertex> shortestPath(Vertex start, Vertex end, std::function<bool (Edge<V>&)> filter);
+  std::vector<Vertex> bfs(unsigned int start, unsigned int depth,
+                          std::function<bool (Edge<V>&)> filter);
+  std::vector<Vertex> dfs(unsigned int start, unsigned int depth,
+                          std::function<bool (Edge<V>&)> filter);
+  std::pair<std::vector<Vertex>, V> shortestPath(unsigned int start, unsigned int end,
+                                   std::function<bool (Edge<V>&)> filter);
 
   static ComputationUnit<V>& instance(void);
 };
