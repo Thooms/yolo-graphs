@@ -26,9 +26,11 @@ void RawTextGraphInput<V>::input(string path) {
   // Vertices fetching
 
   ifs >> v;
+  getline(ifs, title); // wtf
 
   for (int i = 0; i < v; i++) {
-    ifs >> title;
+    getline(ifs, title);
+    std::cout << "Found " << title << std::endl;
     this->graph_.addVertex(title);
   }
 
