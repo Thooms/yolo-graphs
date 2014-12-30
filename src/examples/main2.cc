@@ -56,7 +56,7 @@ int main(void) {
 
   // Output the graph
   DotGraphOutput<double> out(g);
-  out >> "truc.dot";
+  out >> "test2.dot";
 
   return 0;
 }
