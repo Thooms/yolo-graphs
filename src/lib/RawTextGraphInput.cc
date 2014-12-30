@@ -26,7 +26,7 @@ void RawTextGraphInput<V>::input(string path) {
   // Vertices fetching
 
   ifs >> v;
-  getline(ifs, title); // wtf
+  ifs.ignore();
 
   for (int i = 0; i < v; i++) {
     getline(ifs, title);
