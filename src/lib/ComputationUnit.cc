@@ -29,7 +29,7 @@ void ComputationUnit<V>::setGraph(Graph<V>* g) {
 }
 
 template <typename V>
-vector<Vertex> ComputationUnit<V>::dfs(unsigned int start, unsigned int depth, function<bool (Edge<V>&)> filter) {
+vector<Vertex> ComputationUnit<V>::dfs(unsigned int start, unsigned int depth, GenericFilter<V>* filter) {
   vector<Vertex> order;
 
   stack< pair<Vertex, int> > s;
@@ -54,7 +54,7 @@ vector<Vertex> ComputationUnit<V>::dfs(unsigned int start, unsigned int depth, f
 
     // Iterate over all neighbors of the front vertex
     for (auto edge : graph_->outgoingEdges(id))
-      if (filter(*edge)) {
+      if (!filter || (*filter)(*edge)) {
         // Query the neighbor vertex
         Vertex neighbor = graph_->getVertex(edge->getOtherEnd(id));
 
@@ -70,7 +70,7 @@ vector<Vertex> ComputationUnit<V>::dfs(unsigned int start, unsigned int depth, f
 }
 
 template <typename V>
-vector<Vertex> ComputationUnit<V>::bfs(unsigned int start, unsigned int depth, function<bool (Edge<V>&)> filter) {
+vector<Vertex> ComputationUnit<V>::bfs(unsigned int start, unsigned int depth, GenericFilter<V>* filter) { // function<bool (Edge<V>&)> filter) {
   vector<Vertex> order;
 
   queue< pair<Vertex, int> > q;
@@ -95,7 +95,7 @@ vector<Vertex> ComputationUnit<V>::bfs(unsigned int start, unsigned int depth, f
 
     // Iterate over all neighbors of the front vertex
     for (auto edge : graph_->outgoingEdges(id))
-      if (filter(*edge)) {
+      if (!filter || (*filter)(*edge)) {
         // Query the neighbor vertex
         Vertex neighbor = graph_->getVertex(edge->getOtherEnd(id));
 
@@ -131,7 +131,7 @@ public:
 */
 template <typename V>
 pair<vector<Vertex>, V> ComputationUnit<V>::shortestPath(unsigned int start, unsigned int end,
-                            function<bool (Edge<V>&)> filter) {
+                            GenericFilter<V>* filter) {
   // Distances from start
   vector<V> distances(graph_->verticesNb(), -1);
   distances[start] = 0;
@@ -157,7 +157,7 @@ pair<vector<Vertex>, V> ComputationUnit<V>::shortestPath(unsigned int start, uns
 
     // For each adjacent edge, update the neighbors if necessary
     for (auto edge : graph_->outgoingEdges(curr.second)) {
-      if (filter(*edge)) {
+      if (!filter || (*filter)(*edge)) {
         o_id = edge->getOtherEnd(curr.second);
         tmp = distances[curr.second] + edge->cost();
 

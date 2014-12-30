@@ -19,16 +19,16 @@ public:
 
 	virtual bool operator() (Edge<V>&) = 0;
 
-	friend GenericFilter<V>& operator&& (GenericFilter<V>& left, GenericFilter<V>& right) {
-		AndFilter<V>* filter = new AndFilter<V>(left, right);
+	GenericFilter<V>* operator&& (GenericFilter<V>* right) {
+		AndFilter<V>* filter = new AndFilter<V>(this, right);
 
-		return *filter;
+		return filter;
 	}
 
-	friend GenericFilter<V>& operator|| (GenericFilter<V>& left, GenericFilter<V>& right) {
-		OrFilter<V>* filter = new OrFilter<V>(left, right);
+	GenericFilter<V>* operator|| (GenericFilter<V>* right) {
+		OrFilter<V>* filter = new OrFilter<V>(this, right);
 
-		return *filter;
+		return filter;
 	}
 };
 
@@ -36,28 +36,28 @@ public:
 template <typename V>
 class AndFilter : public GenericFilter<V> {
 private:
-	GenericFilter<V> &left_, &right_;
+	GenericFilter<V> *left_, *right_;
 
 public:
-	explicit AndFilter(GenericFilter<V>& left, GenericFilter<V>& right)
+	explicit AndFilter(GenericFilter<V>* left, GenericFilter<V>* right)
 		: left_(left), right_(right) {}
 
 	bool operator() (Edge<V>& e) {
-		return left_(e) && right_(e);
+		return (*left_)(e) && (*right_)(e);
 	}
 };
 
 template <typename V>
 class OrFilter : public GenericFilter<V> {
 private:
-	GenericFilter<V> &left_, &right_;
+	GenericFilter<V> *left_, *right_;
 
 public:
-	explicit OrFilter(GenericFilter<V>& left, GenericFilter<V>& right)
+	explicit OrFilter(GenericFilter<V>* left, GenericFilter<V>* right)
 		: left_(left), right_(right) {}
 
 	bool operator() (Edge<V>& e) {
-		return left_(e) || right_(e);
+		return (*left_)(e) || (*right_)(e);
 	}
 };
 

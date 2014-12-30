@@ -13,8 +13,6 @@
 
 using namespace std;
 
-bool true__(Edge<double>& e) { (void)e; return true; }
-
 int main(void) {
   UndirectedGraph<double> g;
   RawTextGraphInput<double> in(g);
@@ -35,21 +33,21 @@ int main(void) {
   // City and its neighbors
   cout << base << " neighbors: ";
 
-  for (auto vertex : cu.bfs(0, 2, true__))
+  for (auto vertex : cu.bfs(0, 2, NULL))
   	cout << vertex << " ";
   cout << endl;
 
   // City, its neighbors and their neighbors
   cout << base << " neighbors, and their neighbors: ";
 
-  for (auto vertex : cu.bfs(0, 3, true__))
+  for (auto vertex : cu.bfs(0, 3, NULL))
   	cout << vertex << " ";
   cout << endl;
 
   // All cities
   cout << "All cities, starting from " << base << ": ";
 
-  for (auto vertex : cu.bfs(0, 0, true__))
+  for (auto vertex : cu.bfs(0, 0, NULL))
     cout << vertex << " ";
   cout << endl;
 

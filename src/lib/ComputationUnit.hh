@@ -9,6 +9,8 @@
 #include "Vertex.hh"
 #include "Edge.hh"
 
+#include "Filter.hh"
+
 
 template <typename V>
 class ComputationUnit {
@@ -30,11 +32,11 @@ public:
   void setGraph(Graph<V>* g);
   
   std::vector<Vertex> bfs(unsigned int start, unsigned int depth,
-                          std::function<bool (Edge<V>&)> filter);
+                          GenericFilter<V>* filter);
   std::vector<Vertex> dfs(unsigned int start, unsigned int depth,
-                          std::function<bool (Edge<V>&)> filter);
+                          GenericFilter<V>* filter);
   std::pair<std::vector<Vertex>, V> shortestPath(unsigned int start, unsigned int end,
-                                   std::function<bool (Edge<V>&)> filter);
+                                                  GenericFilter<V>* filter);
 
   static ComputationUnit<V>& instance(void);
 };
