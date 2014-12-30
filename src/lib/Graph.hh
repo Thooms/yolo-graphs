@@ -41,7 +41,7 @@ public:
   virtual unsigned int addEdge(EdgeType type, V distance, unsigned int start, unsigned int end) = 0;
 
   /* Adds a vertex and returns its id */
-  virtual unsigned int addVertex(string name, pair<double, double> coordinates) = 0;
+  virtual unsigned int addVertex(string name) = 0;
 
   /* Getters for the graph's elements */
   virtual Edge<V> getEdge(unsigned int) = 0;

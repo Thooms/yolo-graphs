@@ -30,7 +30,7 @@ public:
 
   unsigned int addEdge(EdgeType type, V distance, unsigned int start, unsigned int end);
 
-  unsigned int addVertex(string name, pair<double, double> coordinates);
+  unsigned int addVertex(string name);
 
   Edge<V> getEdge(unsigned int);
   

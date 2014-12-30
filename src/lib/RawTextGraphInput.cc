@@ -29,7 +29,7 @@ void RawTextGraphInput<V>::input(string path) {
 
   for (int i = 0; i < v; i++) {
     ifs >> title;
-    this->graph_.addVertex(title, make_pair(0,0));
+    this->graph_.addVertex(title);
   }
 
   // Edges fetching

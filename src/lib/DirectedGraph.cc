@@ -19,8 +19,8 @@ unsigned int DirectedGraph<V>::addEdge(EdgeType type, V distance, unsigned int s
 }
 
 template <typename V>
-unsigned int DirectedGraph<V>::addVertex(string name, pair<double, double> coordinates) {
-  Vertex v = Vertex(this->vertices_nb_, name, coordinates);
+unsigned int DirectedGraph<V>::addVertex(string name) {
+  Vertex v = Vertex(this->vertices_nb_, name);
   this->vertices_nb_++;
 
   adjacency_.push_back(make_pair(v, vector<unsigned int>()));
