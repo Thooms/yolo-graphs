@@ -1,17 +1,27 @@
-import random
-import sys
+import random, sys, csv
+
+# list of cities borrowed from http://download.geonames.org/export/dump/
 
 if __name__ == '__main__':
     V, E = map(int, sys.argv[1:3])
     path = 'directed_{}_{}.yolo'.format(V, E)
     title = 'YOLO_{}_{}'.format(V, E)
-    
+
+    with open('cities15000.txt') as f:
+      #print f.read()
+      cities = csv.reader(f, delimiter='\t')
+      cityPool = []
+      for row in cities:
+        cityPool.append(list(row)[2])
+
+    random.shuffle(cityPool)
+
     with open(path, 'w') as f:
         f.write(title + '\n')
         
         f.write(str(V) + '\n')
-        for _ in xrange(V):
-            rname = ''.join(map(chr, random.sample(xrange(65, 91), 5))) + '\n'
+        for n in cityPool[:V]:
+            rname = n + '\n'
             f.write(rname)
 
         f.write(str(E) + '\n')
