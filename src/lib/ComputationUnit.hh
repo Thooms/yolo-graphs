@@ -31,11 +31,11 @@ public:
   Graph<V>& graph(void);
   void setGraph(Graph<V>* g);
   
-  std::vector<Vertex> bfs(unsigned int start, unsigned int depth,
+  std::vector<Vertex*> bfs(unsigned int start, unsigned int depth,
                           GenericFilter<V>* filter);
-  std::vector<Vertex> dfs(unsigned int start, unsigned int depth,
+  std::vector<Vertex*> dfs(unsigned int start, unsigned int depth,
                           GenericFilter<V>* filter);
-  std::pair<std::vector<Vertex>, V> shortestPath(unsigned int start, unsigned int end,
+  std::pair<std::vector<Vertex*>, V> shortestPath(unsigned int start, unsigned int end,
                                                   GenericFilter<V>* filter);
 
   static ComputationUnit<V>& instance(void);

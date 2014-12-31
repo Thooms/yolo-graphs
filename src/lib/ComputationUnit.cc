@@ -29,13 +29,13 @@ void ComputationUnit<V>::setGraph(Graph<V>* g) {
 }
 
 template <typename V>
-vector<Vertex> ComputationUnit<V>::dfs(unsigned int start, unsigned int depth, GenericFilter<V>* filter) {
-  vector<Vertex> order;
+vector<Vertex*> ComputationUnit<V>::dfs(unsigned int start, unsigned int depth, GenericFilter<V>* filter) {
+  vector<Vertex*> order;
 
-  stack< pair<Vertex, int> > s;
+  stack< pair<Vertex*, int> > s;
   vector<bool> visited(graph_->verticesNb(), false);
 
-  Vertex v;
+  Vertex* v;
   unsigned int id, current_depth;
 
   // Insert the start vertex as the root of the bfs
@@ -43,10 +43,10 @@ vector<Vertex> ComputationUnit<V>::dfs(unsigned int start, unsigned int depth, G
   visited[start] = true;
 
   while (!s.empty()) {
-    pair<Vertex, int>& head = s.top();
+    pair<Vertex*, int>& head = s.top();
 
     v = head.first;
-    id = v.id();
+    id = v->id();
     current_depth = head.second;
 
     order.push_back(v);
@@ -56,11 +56,11 @@ vector<Vertex> ComputationUnit<V>::dfs(unsigned int start, unsigned int depth, G
     for (auto edge : graph_->outgoingEdges(id))
       if (!filter || (*filter)(*edge)) {
         // Query the neighbor vertex
-        Vertex neighbor = graph_->getVertex(edge->getOtherEnd(id));
+        Vertex* neighbor = graph_->getVertex(edge->getOtherEnd(id));
 
         // Check whether it has already been visited before or if the max depth has been reached
-        if ((current_depth != depth) && !visited[neighbor.id()]) {
-          visited[neighbor.id()] = true;
+        if ((current_depth != depth) && !visited[neighbor->id()]) {
+          visited[neighbor->id()] = true;
           s.push(make_pair(neighbor, current_depth + 1));
         }
       }
@@ -70,13 +70,13 @@ vector<Vertex> ComputationUnit<V>::dfs(unsigned int start, unsigned int depth, G
 }
 
 template <typename V>
-vector<Vertex> ComputationUnit<V>::bfs(unsigned int start, unsigned int depth, GenericFilter<V>* filter) { // function<bool (Edge<V>&)> filter) {
-  vector<Vertex> order;
+vector<Vertex*> ComputationUnit<V>::bfs(unsigned int start, unsigned int depth, GenericFilter<V>* filter) { // function<bool (Edge<V>&)> filter) {
+  vector<Vertex*> order;
 
-  queue< pair<Vertex, int> > q;
+  queue< pair<Vertex*, int> > q;
   vector<bool> visited(graph_->verticesNb(), false);
 
-  Vertex v;
+  Vertex* v;
   unsigned int id, current_depth;
 
   // Insert the start vertex as the root of the bfs
@@ -84,10 +84,10 @@ vector<Vertex> ComputationUnit<V>::bfs(unsigned int start, unsigned int depth, G
   visited[start] = true;
 
   while (!q.empty()) {
-    pair<Vertex, int>& head = q.front();
+    pair<Vertex*, int>& head = q.front();
 
     v = head.first;
-    id = v.id();
+    id = v->id();
     current_depth = head.second;
 
     order.push_back(v);
@@ -97,11 +97,11 @@ vector<Vertex> ComputationUnit<V>::bfs(unsigned int start, unsigned int depth, G
     for (auto edge : graph_->outgoingEdges(id))
       if (!filter || (*filter)(*edge)) {
         // Query the neighbor vertex
-        Vertex neighbor = graph_->getVertex(edge->getOtherEnd(id));
+        Vertex* neighbor = graph_->getVertex(edge->getOtherEnd(id));
 
         // Check whether it has already been visited before or if the max depth has been reached
-        if ((current_depth != depth) && !visited[neighbor.id()]) {
-          visited[neighbor.id()] = true;
+        if ((current_depth != depth) && !visited[neighbor->id()]) {
+          visited[neighbor->id()] = true;
           q.push(make_pair(neighbor, current_depth + 1));
         }
       }
@@ -130,7 +130,7 @@ public:
    positivity of cycles, and so on. The graph needs to be connex for now.
 */
 template <typename V>
-pair<vector<Vertex>, V> ComputationUnit<V>::shortestPath(unsigned int start, unsigned int end,
+pair<vector<Vertex*>, V> ComputationUnit<V>::shortestPath(unsigned int start, unsigned int end,
                             GenericFilter<V>* filter) {
   // Distances from start
   vector<V> distances(graph_->verticesNb(), -1);
@@ -171,7 +171,7 @@ pair<vector<Vertex>, V> ComputationUnit<V>::shortestPath(unsigned int start, uns
   }
 
   // We follow the tree to find the path searched for
-  vector<Vertex> res;
+  vector<Vertex*> res;
   unsigned int curr_id = end;
 
   do {
