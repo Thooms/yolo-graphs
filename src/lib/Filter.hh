@@ -30,6 +30,8 @@ public:
 
 		return filter;
 	}
+
+	virtual ~GenericFilter() {}
 };
 
 
@@ -45,6 +47,8 @@ public:
 	bool operator() (Edge<V>& e) {
 		return (*left_)(e) && (*right_)(e);
 	}
+
+	~AndFilter() {}
 };
 
 template <typename V>
@@ -59,6 +63,8 @@ public:
 	bool operator() (Edge<V>& e) {
 		return (*left_)(e) || (*right_)(e);
 	}
+
+	~OrFilter() {}
 };
 
 
@@ -74,6 +80,8 @@ public:
 	bool operator() (Edge<V>& e) {
 		return filter_(e);
 	}
+
+	~Filter() {}
 };
 
 #endif

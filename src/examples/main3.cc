@@ -40,5 +40,11 @@ int main(void) {
     cout << *city << " ";
   cout << endl;
 
+  // Free memory, it's ecological! :-)
+  delete global_filter;
+  delete small_edges;
+  delete roads;
+  delete planes;
+
   return 0;
 }
