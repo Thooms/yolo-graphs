@@ -11,3 +11,6 @@ unsigned int Vertex::id(void) {
 	return id_;
 }
 
+void Vertex::setID(unsigned int id) {
+    id_ = id;
+}

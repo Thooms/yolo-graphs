@@ -16,7 +16,7 @@ using namespace std;
 template <typename V>
 class DirectedGraph : public Graph<V> {
 protected:
-  vector< pair< Vertex, vector<unsigned int> > > adjacency_;
+  vector< pair< Vertex*, vector<unsigned int> > > adjacency_;
   vector< Edge<V> > edges_;
 
 public:
@@ -30,11 +30,13 @@ public:
 
   unsigned int addEdge(EdgeType type, V distance, unsigned int start, unsigned int end);
 
-  unsigned int addVertex(string name);
+  unsigned int addVertex(string);
+
+  unsigned int addVertex(Vertex*);
 
   Edge<V> getEdge(unsigned int);
   
-  Vertex getVertex(unsigned int);
+  Vertex* getVertex(unsigned int);
 
   vector<Edge<V>*> outgoingEdges(unsigned int);
 

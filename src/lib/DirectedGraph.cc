@@ -20,12 +20,22 @@ unsigned int DirectedGraph<V>::addEdge(EdgeType type, V distance, unsigned int s
 
 template <typename V>
 unsigned int DirectedGraph<V>::addVertex(string name) {
-  Vertex v = Vertex(this->vertices_nb_, name);
+  Vertex* v = new Vertex(this->vertices_nb_, name);
   this->vertices_nb_++;
 
   adjacency_.push_back(make_pair(v, vector<unsigned int>()));
 
-  return v.id();
+  return v->id();
+}
+
+template <typename V>
+unsigned int DirectedGraph<V>::addVertex(Vertex* v) {
+  v->setID(this->vertices_nb_);
+  this->vertices_nb_++;
+
+  adjacency_.push_back(make_pair(v, vector<unsigned int>()));
+
+  return v->id();
 }
 
 template <typename V>
@@ -37,7 +47,7 @@ Edge<V> DirectedGraph<V>::getEdge(unsigned int id) {
 }
 
 template <typename V>
-Vertex DirectedGraph<V>::getVertex(unsigned int id) {
+Vertex* DirectedGraph<V>::getVertex(unsigned int id) {
   // if (id >= adjacency_.size())
   //  return;
   
@@ -72,7 +82,7 @@ vector<Vertex*> DirectedGraph<V>::adjacentVertices(unsigned int id) {
 
     if (!inserted[other_id]) {
       inserted[other_id] = true;
-      vertices.push_back(&adjacency_[other_id].first);
+      vertices.push_back(adjacency_[other_id].first);
     }
   }
 
@@ -81,8 +91,10 @@ vector<Vertex*> DirectedGraph<V>::adjacentVertices(unsigned int id) {
 
 template <typename V>
 DirectedGraph<V>::~DirectedGraph() {
-  for (auto v : adjacency_)
-    v.second.clear();
+  for (auto adj : adjacency_) {
+    delete adj.first;
+    adj.second.clear();
+  }
 
   adjacency_.clear();
   edges_.clear();

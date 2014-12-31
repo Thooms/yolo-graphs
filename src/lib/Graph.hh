@@ -46,7 +46,7 @@ public:
   /* Getters for the graph's elements */
   virtual Edge<V> getEdge(unsigned int) = 0;
   
-  virtual Vertex getVertex(unsigned int) = 0;
+  virtual Vertex* getVertex(unsigned int) = 0;
 
   virtual vector<Edge<V>*> outgoingEdges(unsigned int) = 0;
 

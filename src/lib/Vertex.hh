@@ -21,6 +21,7 @@ public:
 
   /* {Get, Set}ters */
   unsigned int id(void);
+  void setID(unsigned int);
 
   /* Destructor */
 
