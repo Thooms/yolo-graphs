@@ -1,16 +1,16 @@
 
-#ifndef GRAPHOUTPUT_HH
-#define GRAPHOUTPUT_HH
+#ifndef MAPOUTPUT_HH
+#define MAPOUTPUT_HH
 
-#include "Graph.hh"
+#include "Map.hh"
 
-template <typename T, typename V>
-class GraphOutput {
+template <typename T>
+class MapOutput {
 protected:
-  Graph<V>& graph_;
+  Map& map_;
 
 public:
-  GraphOutput(Graph<V>& g) : graph_(g) {}
+  MapOutput(Map& m) : map_(m) {}
 
   /* Outputs the graph. */
   virtual void output(T outputdata) = 0;

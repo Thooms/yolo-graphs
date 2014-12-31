@@ -1,4 +1,4 @@
-#include "DotGraphOutput.hh"
+#include "DotMapOutput.hh"
 #include "EdgeType.hh"
 
 #include <sstream>
@@ -23,18 +23,17 @@ string getEdgeStyle(EdgeType t, V val) {
   return ss.str();
 }
 
-template <typename V>
-void DotGraphOutput<V>::output(string path) {
+void DotMapOutput::output(string path) {
 
   ofstream st(path, ofstream::out);
 
-  st << "digraph " << this->graph_.name() << " {" << endl;
+  st << "digraph " << this->map_.name() << " {" << endl;
 
-  for (unsigned int i = 0; i < this->graph_.verticesNb(); i++)
-    st << "\t" << i << " [label=\"" << this->graph_.getVertex(i).name() << "\"];" << endl;
+  for (unsigned int i = 0; i < this->map_.verticesNb(); i++)
+    st << "\t" << i << " [label=\"" << this->map_.getVertex(i)->name() << "\"];" << endl;
 
-  for (unsigned int i = 0; i < this->graph_.verticesNb(); i++)
-    for (auto e : this->graph_.outgoingEdges(i)) {
+  for (unsigned int i = 0; i < this->map_.verticesNb(); i++)
+    for (auto e : this->map_.outgoingEdges(i)) {
       st << "\t" << i
 	 << " -> " << e->getOtherEnd(i)
 	 << " " << getEdgeStyle(e->type(), e->distance()) 
@@ -45,6 +44,3 @@ void DotGraphOutput<V>::output(string path) {
 
   st.close();
 }
-
-
-template class DotGraphOutput<double>;

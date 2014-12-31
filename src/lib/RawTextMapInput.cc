@@ -1,5 +1,5 @@
 
-#include "RawTextGraphInput.hh"
+#include "RawTextMapInput.hh"
 
 /*
   name
@@ -9,8 +9,7 @@
   [|E| lines formatted like start end type distance]
  */
 
-template <typename V>
-void RawTextGraphInput<V>::input(string path) {
+void RawTextMapInput::input(string path) {
   
   ifstream ifs(path, ifstream::in);
   
@@ -21,7 +20,7 @@ void RawTextGraphInput<V>::input(string path) {
 
   ifs >> title;
 
-  this->graph_.setName(title);
+  this->map_.setName(title);
 
   // Vertices fetching
 
@@ -30,29 +29,28 @@ void RawTextGraphInput<V>::input(string path) {
 
   for (int i = 0; i < v; i++) {
     getline(ifs, title);
-    this->graph_.addVertex(title);
+    this->map_.addCity(title);
   }
 
   // Edges fetching
 
   unsigned int start, end;
   string type;
-  EdgeType t;
-  V dist;
+  double dist;
 
   ifs >> e;
 
   for (int i = 0; i < e; i++) {
     ifs >> start >> end >> type >> dist;
-    if (type == "Train")
-      t = EdgeType::Train;
-    else if (type == "Road")
-      t = EdgeType::Road;
-    else
-      t = EdgeType::Plane;
 
-    this->graph_.addEdge(t, dist, start, end);
+    City* s = this->map_.getCity(start);
+    City* e = this->map_.getCity(end);
+
+    if (type == "Train")
+      this->map_.addTrain(dist, s, e);
+    else if (type == "Road")
+      this->map_.addRoad(dist, s, e);
+    else
+      this->map_.addPlane(dist, s, e);
   }
 }
-
-template class RawTextGraphInput<double>;
