@@ -30,7 +30,7 @@ int main(void) {
   GenericFilter<double>* roads = new Filter<double>(roads_);
   GenericFilter<double>* planes = new Filter<double>(planes_);
 
-  // Accepted edges must be small AND roads
+  // Accepted edges must be either planes or both small and roads
   GenericFilter<double>* global_filter = *planes || (*small_edges && roads);
 
   // City and its neighbors
