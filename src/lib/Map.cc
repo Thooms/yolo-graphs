@@ -80,7 +80,7 @@ vector<City*> Map::neighbors_depth(City* city, unsigned int depth, GenericFilter
     auto& cu = ComputationUnit<double>::instance();
     cu.setGraph(this);
 
-    auto vertices = cu.bfs(city->id(), depth, NULL);
+    auto vertices = cu.bfs(city->id(), depth, filter);
 
     vector<City*> result(vertices.size(), NULL);
 
