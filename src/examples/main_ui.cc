@@ -52,20 +52,34 @@ void print_cities(Map *m) {
     cout << endl;
 }
 
-// Add a new link between two cities
-void add_link(Map* m, string city1, string city2, EdgeType type, double distance) {
-    City* c1 = NULL;
-    City* c2 = NULL;
-    
+void print_links(Map* m) {
+    cout << "Links available:" << endl;
+
+    for (unsigned int i = 0; i < m->edgesNb(); ++i) {
+        auto edge = m->getEdge(i);
+
+        auto cities = edge.vertices();
+        cout << "\t* " << *m->getCity(cities.first) << " - ";
+        cout << *m->getCity(cities.second) << " - " << edge.distance();
+        cout << "km" << endl;
+    }
+}
+
+City* city_by_name(string name, Map* m) {
     for (unsigned int i = 0; i < m->verticesNb(); ++i) {
         City* c = m->getCity(i);
         
-        if (c->name() == city1)
-            c1 = c;
-
-        if (c->name() == city2)
-            c2 = c;
+        if (c->name() == name)
+            return c;
     }
+
+    return NULL;
+}
+
+// Add a new link between two cities
+void add_link(Map* m, string city1, string city2, EdgeType type, double distance) {
+    City* c1 = city_by_name(city1, m);
+    City* c2 = city_by_name(city2, m);
 
     if ((c1 == NULL) || (c2 == NULL)) {
         cout << "Invalid city name" << endl;
@@ -87,12 +101,96 @@ void add_link(Map* m, string city1, string city2, EdgeType type, double distance
     }
 }
 
+int menu(void) {
+    int result;
+    
+    cout << "What to do?" << endl;
+    cout << "\t1. Neighbors of a city" << endl;
+    cout << "\t2. Neighbors & neighbors of neighbors of a city" << endl;
+    cout << "\t3. All neighbors of a city" << endl;
+    cout << "\t4. Shortest path between two cities" << endl;
+    cout << "\t5. Exit" << endl;
+
+    cin >> result;
+    cin.ignore();
+
+    if ((result < 1) || (result > 5))
+        return menu();
+
+    return result;
+}
+
+void neighbors(Map* m) {
+    string name;
+    read_input("Enter city name:", &name);
+
+    City* city = city_by_name(name, m);
+
+    if (city == NULL)
+        neighbors(m);
+
+    auto cities = m->neighbors(city, NULL);
+
+    for (auto c : cities)
+        cout << "\t* " << *c << endl;
+}
+
+void neighbors_neighbors(Map* m) {
+    string name;
+    read_input("Enter city name:", &name);
+
+    City* city = city_by_name(name, m);
+
+    if (city == NULL)
+        neighbors_neighbors(m);
+
+    auto cities = m->neighborsOfNeighbors(city, NULL);
+
+    for (auto c : cities)
+        cout << "\t* " << *c << endl;
+}
+
+void all_neighbors(Map* m) {
+    string name;
+    read_input("Enter city name:", &name);
+
+    City* city = city_by_name(name, m);
+
+    if (city == NULL)
+        all_neighbors(m);
+
+    auto cities = m->allNeighbors(city, NULL);
+
+    for (auto c : cities)
+        cout << "\t* " << *c << endl;
+}
+
+void shortest_path(Map* m) {
+    string city1, city2;
+    read_input("Enter start city name:", &city1);
+    read_input("Enter end city name:", &city2);
+
+    City* c1 = city_by_name(city1, m);
+    City* c2 = city_by_name(city2, m);
+
+    if ((c1 == NULL) || (c2 == NULL))
+        shortest_path(m);
+
+    auto path = m->shortestPath(c1, c2, NULL);
+
+    for (auto c : path.first)
+        cout << *c << " -> ";
+
+    cout << "Distance: " << path.second << endl;
+}
+
 int main(void) {
     Map m;
     string input;
     string city1, city2;
     EdgeType edge_type;
     double distance;
+    bool done;
     
     read_input("Name of the map:", &input);
 
@@ -126,7 +224,29 @@ int main(void) {
         read_input("Distance: (> 0)", &distance);
     } while (true);
 
-    cout << "Map created" << endl;
+    print_links(&m);
+
+    done = false;
+
+    do {
+        switch (menu()) {
+        case 1:
+            neighbors(&m);
+            break;
+        case 2:
+            neighbors_neighbors(&m);
+            break;
+        case 3:
+            all_neighbors(&m);
+            break;
+        case 4:
+            shortest_path(&m);
+            break;
+        case 5:
+            done = true;
+            break;
+        }
+    } while (!done);
     
     return 0;
 }
