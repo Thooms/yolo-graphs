@@ -41,12 +41,6 @@ public:
 
   unsigned int getOtherEnd(unsigned int);
 
-  /* Cost function.
-     Basically, the cost is the time it take to travel an edge (assuming an uniform speed).
-   */
-
-  V cost(void);
-
   /* Destructor */
 
   ~Edge() {}

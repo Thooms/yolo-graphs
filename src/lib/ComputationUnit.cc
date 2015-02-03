@@ -127,11 +127,11 @@ public:
 };
 
 /* Dijkstra algorithm implementation, suffers from the usual limitations like
-   positivity of cycles, and so on. The graph needs to be connex for now.
+   positivity of cycles, and so on.
 */
 template <typename V>
 pair<vector<Vertex*>, V> ComputationUnit<V>::shortestPath(unsigned int start, unsigned int end,
-                            GenericFilter<V>* filter) {
+                            GenericFilter<V>* filter, function<double (Edge<V>)> cost) {
   // Distances from start
   vector<V> distances(graph_->verticesNb(), -1);
   distances[start] = 0;
@@ -159,7 +159,7 @@ pair<vector<Vertex*>, V> ComputationUnit<V>::shortestPath(unsigned int start, un
     for (auto edge : graph_->outgoingEdges(curr.second)) {
       if (!filter || (*filter)(*edge)) {
         o_id = edge->getOtherEnd(curr.second);
-        tmp = distances[curr.second] + edge->cost();
+        tmp = distances[curr.second] + cost(*edge);
 
         if (distances[o_id] == -1 || tmp < distances[o_id]) {
           distances[o_id] = tmp;

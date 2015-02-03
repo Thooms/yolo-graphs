@@ -9,6 +9,10 @@
 
 using namespace std;
 
+
+// Cost function using distance between cities
+double distance_cost(Edge<double> e) { return e.distance(); }
+
 /******* Read data from stdin **************/
 
 void read_input(string message, string* value) {
@@ -176,7 +180,7 @@ void shortest_path(Map* m) {
     if ((c1 == NULL) || (c2 == NULL))
         shortest_path(m);
 
-    auto path = m->shortestPath(c1, c2, NULL);
+    auto path = m->shortestPath(c1, c2, NULL, distance_cost);
 
     for (auto c : path.first)
         cout << *c << " -> ";

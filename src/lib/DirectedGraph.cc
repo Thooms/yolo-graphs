@@ -9,6 +9,8 @@ unsigned int DirectedGraph<V>::addEdge(EdgeType type, V distance, unsigned int s
   Edge<V> e = Edge<V>(this->edges_nb_, start, end, type, distance);
   this->edges_nb_++;
 
+  cout << distance << endl;
+
   if ((start >= this->vertices_nb_) || (end >= this->vertices_nb_))
     return -1;
   

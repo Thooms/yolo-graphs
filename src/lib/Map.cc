@@ -56,11 +56,11 @@ vector<City*> Map::allNeighbors(City* city, GenericFilter<double>* filter) {
     return neighbors_depth(city, 0, filter);
 }
 
-pair<vector<City*>, double> Map::shortestPath(City* start, City* end, GenericFilter<double>* filter) {
+pair<vector<City*>, double> Map::shortestPath(City* start, City* end, GenericFilter<double>* filter, std::function<double (Edge<double>)> cost) {
     auto& cu = ComputationUnit<double>::instance();
     cu.setGraph(this);
 
-    auto shortest = cu.shortestPath(start->id(), end->id(), filter);
+    auto shortest = cu.shortestPath(start->id(), end->id(), filter, cost);
 
     pair<vector<City*>, double> result;
 

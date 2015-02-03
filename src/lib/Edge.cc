@@ -53,11 +53,6 @@ unsigned int Edge<V>::getOtherEnd(unsigned int id) {
   return -1;
 }
 
-template <typename V>
-V Edge<V>::cost(void) {
-  return distance_ * static_cast<V>(type_);
-}
-
 // Types of edges that can be instantiated
 template class Edge<double>;
 template class Edge<float>;

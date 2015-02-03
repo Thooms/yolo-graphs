@@ -36,7 +36,8 @@ public:
   std::vector<Vertex*> dfs(unsigned int start, unsigned int depth,
                           GenericFilter<V>* filter);
   std::pair<std::vector<Vertex*>, V> shortestPath(unsigned int start, unsigned int end,
-                                                  GenericFilter<V>* filter);
+                                                  GenericFilter<V>* filter,
+                                                  std::function<double (Edge<V>)> cost);
 
   static ComputationUnit<V>& instance(void);
 };

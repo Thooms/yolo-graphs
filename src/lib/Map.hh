@@ -40,7 +40,7 @@ public:
     std::vector<City*> neighborsOfNeighbors(City*, GenericFilter<double>*);
     std::vector<City*> allNeighbors(City*, GenericFilter<double>*);
 
-    pair<vector<City*>, double> shortestPath(City* start, City* end, GenericFilter<double>* filter);
+    pair<vector<City*>, double> shortestPath(City* start, City* end, GenericFilter<double>* filter, std::function<double (Edge<double>)> cost);
 
 private:
     std::vector<City*> neighbors_depth(City*, unsigned int, GenericFilter<double>*);
