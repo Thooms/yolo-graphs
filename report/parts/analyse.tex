@@ -107,7 +107,10 @@ On remarquera le \texttt{template <typename V>}, qui nous permet
 d'obtenir des graphes totalement polymorphes (au sens programmation
 fonctionnelle du terme) en le type qui étiquette les
 arêtes\footnote{Ou presque, les paramètre de types doivent implémenter
-  une comparaison ainsi que les opérateurs de flux.}. Ainsi, nous
+  une comparaison ainsi que les opérateurs de flux. Malheureusement,
+  il n'y a pas de moyen propre d'encoder ça en C++ (à moins de faire
+  des assertions/casts absolument immondes en comptant sur le
+  compilateur pour lever des erreurs au compile time).}. Ainsi, nous
 sommes complètement flexibles de ce côté là (on pourra imaginer plus
 tard de la gestion de flots, ou de la gestion de graphes sociaux, qui
 nous obligent à ajouter de l'information sur les arêtes).

@@ -30,3 +30,22 @@ Les seuls points un peu exotiques de ce code sont cette fonction :
 
 qui est en fait un filtre vide pour les parcours (le compilateur a la
 facheuse tendance à se plaindre lorsque des variables sont inutilisées).
+
+\subsection{Étapes 2 à 4}
+
+Pour ces livrables, nous avons ajouté les fonctionnalités suivantes :
+
+\begin{itemize}
+\item Une spécialisation de nos graphes pour une modélisation de
+  routes/chemins de fers/voies aériennes (afin de mieux coller au sujet).
+\item Un nettoyage des filtres (notemment sur leur syntaxe), et
+  l'ajout d'un DSL\footnote{Domain-Specific Language} pour pouvoir les
+  combiner entre eux.
+\item Des tests, situés toujours dans \texttt{src/examples}
+  correspondant à chacun des livrables.
+\item Un semblant d'UI\footnote{User Interface} pour les exemples.
+\end{itemize} 
+
+Tous les changements apportés au projet sont répertoriés et datés dans
+le graphe de commits du projet, disponible ici :
+\url{https://github.com/Thooms/yolo-graphs/commits/master}
