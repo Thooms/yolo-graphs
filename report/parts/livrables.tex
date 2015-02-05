@@ -22,14 +22,13 @@ effectue dans l'ordre les choses suivantes :
   sous format Dot, pour finalement récupérer \texttt{truc.dot}.
 \end{itemize}
 
-Les seuls points un peu exotiques de ce code sont cette fonction :
-
-\begin{minted}{c++}
-  bool true__(Edge<double>& e) { (void)e; return true; }
-\end{minted}
-
-qui est en fait un filtre vide pour les parcours (le compilateur a la
-facheuse tendance à se plaindre lorsque des variables sont inutilisées).
+Les seuls points un peu exotiques de ce code sont les filtres (qui
+sont ici choisis comme des filtres laissant tout passer). Le but des
+filtres est de pouvoir choisir quel(s) type(s) d'arêtes seront
+utilisés dans les différents parcours et recherche du plus court
+chemin. Un filtre NULL laisse toutes les arêtes passer, un exemple sur
+l'utilisation des filtres se trouve dans le fichier
+\texttt{src/examples/main\_filters.cc}.
 
 \subsection{Étapes 2 à 4}
 
@@ -44,6 +43,8 @@ Pour ces livrables, nous avons ajouté les fonctionnalités suivantes :
 \item Des tests, situés toujours dans \texttt{src/examples}
   correspondant à chacun des livrables.
 \item Un semblant d'UI\footnote{User Interface} pour les exemples.
+\item Une interface console où la majorité des fonctionalités de l'API
+  peuvent être testées à la main.
 \end{itemize} 
 
 Tous les changements apportés au projet sont répertoriés et datés dans

@@ -51,34 +51,30 @@ L'API est détaillée ci dessous :
 
 \begin{figure}[H]
 \begin{minted}{c++}
-  // NOTE: No setter, the only way to modify it is to add a vertex
-  unsigned int verticesNb(void) { return vertices_nb_; }
+  City* addCity(string name);
+  City* addCity(string name, double lat, double lon);
   
-  // NOTE: No setter as well
-  unsigned int edgesNb(void) { return edges_nb_; }
+  City* getCity(unsigned int);
   
-  /* Adds an edge and returns its id */
-  virtual unsigned int addEdge(EdgeType type, V distance, 
-                               unsigned int start, 
-                               unsigned int end) = 0;
-
-  /* Adds a vertex and returns its id */
-  virtual unsigned int addVertex(string name, 
-                                 pair<double, double> coordinates) = 0;
-
-  /* Getters for the graph's elements */
-  virtual Edge<V> getEdge(unsigned int) = 0;
+  unsigned int addRoad(double distance, City* start, City* end);
+  unsigned int addTrain(double distance, City* start, City* end);
+  unsigned int addPlane(double distance, City* start, City* end);
   
-  virtual Vertex getVertex(unsigned int) = 0;
-
-  virtual vector<Edge<V>*> outgoingEdges(unsigned int) = 0;
-
-  virtual vector<Vertex*> adjacentVertices(unsigned int) = 0;
+  std::vector<City*> neighbors(City*, GenericFilter<double>*);
+  std::vector<City*> neighborsOfNeighbors(City*, GenericFilter<double>*);
+  std::vector<City*> allNeighbors(City*, GenericFilter<double>*);
+  
+  pair<vector<City*>, double> shortestPath(
+      City* start, City* end,
+      GenericFilter<double>* filter,
+      std::function<double (Edge<double>)> cost);
+  
 \end{minted}
-\caption{Extrait de \texttt{src/Graph.hh}}
+\caption{Extrait de \texttt{src/Map.hh}}
 \end{figure}
 
-On notera que la plupart de ces méthodes sont virtuelles et non
+On notera que la plupart des méthodes de la classe Graph (voir le
+fichier \texttt{src/lib/Graph.hh}) sont virtuelles et non
 implémentées. Ceci nous force donc à hériter de \texttt{Graph} et à
 écrire une vraie représentation de graphe (cf
 \texttt{src/DirectedGraph.cc}). D'une certaine manière, nous avons
@@ -115,7 +111,6 @@ sommes complètement flexibles de ce côté là (on pourra imaginer plus
 tard de la gestion de flots, ou de la gestion de graphes sociaux, qui
 nous obligent à ajouter de l'information sur les arêtes).
 
-
 \subsubsection{Graphe orienté -- Graphe non-orienté}
 
 Au cours de l'analyse, nous nous sommes rendu compte que les graphes
@@ -151,6 +146,29 @@ arêtes. Analytiquement parlant, la représentation d'un graphe
 non-orienté \textit{hérite} de celle d'un graphe orienté, nous avons
 simplement à réimplémenter la méthode \texttt{addEdge} vue dans l'API.
 
+\subsection{Map -- Façade}
+
+Originellement, il était prévu de ne manipuler que des instances de
+\texttt{Graph}. Il nous a fortement été conseillé d'utiliser une façade
+pour permettre à l'utilisateur final d'intéragir directement avec des
+cartes.
+
+De tout ce que permet de faire l'API, une carte est simplement un graphe
+non-orienté avec des arêtes de type \texttt{double}. C'est pour cela
+que la classe \texttt{Map} se définit comme suit :
+
+\begin{figure}[H]
+\begin{minted}{c++}
+  class Map : public UndirectedGraph<double>
+\end{minted}
+\caption{Extrait de \texttt{src/Map.hh}}
+\end{figure}
+
+Un autre outil pour la façade est l'utilisation d'une classe \texttt{City}
+à la place de la classe \texttt{Vertex}, comme ça l'utilisateur manipule
+une carte et les villes qui lui sont associées. Conceptuellement parlant,
+une ville hérite d'un sommet.
+
 \subsection{Unité de calcul (ComputationUnit) -- Singleton}
 
 L'unité de calcul représente la boite à outil de notre programme, c'est
@@ -183,6 +201,29 @@ qu'elle renvoit \texttt{true} si l'arête est une route :
   }
 \end{minted}
 \caption{Un exemple de filtre}
+\end{figure}
+
+Une particularité de l'algorithme permettant de trouver le plus court
+chemin entre deux sommets est qu'il permet également de définir ce que
+représente réellement le coût d'une arête entre deux sommets.
+
+On peut par exemple décider que le coût représente la distance entre
+les villes, on peut également vouloir que le coût soit défini en terme
+de temps de parcours entre les sommets (temps = distance / vitesse, la
+vitesse étant déterminée selon le type d'arête, que ce soit une route,
+un train ou un avion).
+
+Voici le code des exemples pour illuster ce propos :
+
+\begin{figure}[H]
+\begin{minted}{c++}
+  // Cost function using distance between cities
+  double distance_cost(Edge<double> e) { return e.distance(); }
+
+  // Cost function using estimated time between cities (time = distance / speed)
+  double time_cost(Edge<double> e) { return e.distance() / static_cast<double>(e.type()); }
+\end{minted}
+\caption{Un exemple de fonctions de coût}
 \end{figure}
 
 \subsection{Entrées et Sorties (E/S) -- Stratégie}
